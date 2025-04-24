@@ -278,5 +278,4 @@ function showResults() {
   console.log("Narratiivit:", writtenSummary.innerHTML);
 
   document.getElementById("resultsContainer").style.display = "block";
-  document.getElementById("writtenSummaryContainer").style.display = "block";
 }
