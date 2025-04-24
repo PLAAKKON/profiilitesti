@@ -237,6 +237,9 @@ function handleAnswer(qid, option) {
     });
   }
 
+  // Debug: Tulosta päivitetyt pisteet
+  console.log("Päivitetyt pisteet:", results);
+
   currentQuestionIndex++;
   if (currentQuestionIndex < questions.length) {
     showQuestion();
@@ -251,6 +254,9 @@ function showResults() {
   const writtenSummary = document.getElementById("writtenSummary");
   resultsList.innerHTML = "";
   writtenSummary.innerHTML = "";
+
+  // Debug: Tulosta tulokset ennen näyttämistä
+  console.log("Tulokset ennen näyttämistä:", results);
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   Object.entries(results).forEach(([id, prof]) => {
@@ -268,5 +274,9 @@ function showResults() {
     }
   });
 
+  // Debug: Tulosta narratiivit
+  console.log("Narratiivit:", writtenSummary.innerHTML);
+
   document.getElementById("resultsContainer").style.display = "block";
+  document.getElementById("writtenSummaryContainer").style.display = "block";
 }
