@@ -214,9 +214,9 @@ function showQuestion() {
   const question = questions[currentQuestionIndex];
   const container = document.getElementById("questionContainer");
   container.innerHTML = `<h3>${question.text}</h3>`;
-  Object.entries(question.options).forEach(([key, label]) => {
+  Object.entries(question.options).forEach(([key, option]) => {
     const btn = document.createElement("button");
-    btn.textContent = label;
+    btn.textContent = option.label; // Korjattu: Näytetään label-arvo
     btn.onclick = () => handleAnswer(question.id, key);
     container.appendChild(btn);
     container.appendChild(document.createElement("br"));
