@@ -101,13 +101,39 @@ const questions = [
   }
 ];
 
+const comboRules = [
+  { cond: [{ q: 1, a: 'a' }, { q: 5, a: 'a' }], add: { 14: 1 } },
+  { cond: [{ q: 1, a: 'a' }, { q: 6, a: 'a' }], add: { 25: 1 } },
+  { cond: [{ q: 6, a: 'a' }, { q: 9, a: 'c' }], add: { 25: 1 } },
+  { cond: [{ q: 8, a: 'a' }, { q: 10, a: 'a' }], add: { 25: 1 } },
+  { cond: [{ q: 3, a: 'a' }, { q: 10, a: 'a' }], add: { 14: 1 } },
+  { cond: [{ q: 7, a: 'c' }, { q: 8, a: 'b' }], add: { 21: 2 } },
+  { cond: [{ q: 4, a: 'b' }, { q: 10, a: 'a' }], add: { 21: 2 } },
+  { 
+    cond: [
+      { q: 2, a: 'a' }, 
+      { q: 3, a: 'a' }, 
+      { q: 5, a: 'c' }
+    ],
+    add: { 6: 3 }
+  },
+  { 
+    cond: [
+      { q: 2, a: 'a' }, 
+      { q: 3, a: 'c' }, 
+      { q: 5, a: 'd' }
+    ],
+    add: { 6: 2 }
+  }
+];
+
 const results = {
   "1": { name: "Fyysinen varasto- ja logistiikka-aputyö ISCO 93, TK10 933", threshold: 14, score: 0 },
   "2": { name: "Pakkaus- ja tuotannon apu- ja kokoonpanotyö ISCO 93, TK10 932", threshold: 14, score: 0 },
   "3": { name: "Rakennustyön ja kiinteistöhuollon avustava työ ISCO 71, TK10 711, TK10 712", threshold: 14, score: 0 },
   "4": { name: "Luonnnovara- ja ympäristöalan perustyö (avustavat puisto- ja maataloustyöt) ISCO 61, TK10 611", threshold: 14, score: 0 },
   "5": { name: "Posti-, lähetti- ja jakelutyö ISCO 43, TK10 441", threshold: 14, score: 0 },
-  "6": { name: "RPuhdistus- ja siivoustyö, ISCO 91, TK10 911ö", threshold: 14, score: 0 },
+  "6": { name: "Puhdistus- ja siivoustyö, ISCO 91, TK10 911", threshold: 14, score: 0 },
   "7": { name: "Kunnossapito- ja korjaustyön tukityö, ISCO 72, TK10 723", threshold: 14, score: 0 },
   "8": { name: "Myyntityö ja kassapalvelut, ISCO 52, TK10 522", threshold: 14, score: 0 },
   "9": { name: "Ravintola- ja keittiöalan perustyö, ISCO 51, TK10 512, TK10 513", threshold: 14, score: 0 },
@@ -238,6 +264,17 @@ function handleAnswer(qid, option) {
       }
     });
   }
+
+  // Yhdistelmäehtojen käsittely
+  comboRules.forEach(rule => {
+    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
+      Object.entries(rule.add).forEach(([resultId, score]) => {
+        if (results[resultId]) {
+          results[resultId].score += score;
+        }
+      });
+    }
+  });
 
   // Debug: Tulosta päivitetyt pisteet
   console.log("Päivitetyt pisteet:", results);
