@@ -255,10 +255,7 @@ function showResults() {
   const resultsList = document.getElementById("resultsList");
   const writtenSummary = document.getElementById("writtenSummary");
   resultsList.innerHTML = "";
-  writtenSummary.innerHTML = "";
-
-  // Debug: Tulosta tulokset ennen näyttämistä
-  console.log("Tulokset ennen näyttämistä:", results);
+  writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   Object.entries(results).forEach(([id, prof]) => {
@@ -272,12 +269,11 @@ function showResults() {
   // Näytä narratiivit vastausten perusteella
   Object.entries(answers).forEach(([qid, opt]) => {
     if (narratives[qid] && narratives[qid][opt]) {
-      writtenSummary.innerHTML += "• " + narratives[qid][opt];
+      const paragraph = document.createElement("p");
+      paragraph.innerHTML = "• " + narratives[qid][opt]; // Käytetään innerHTML, jotta HTML-tunnisteet näkyvät oikein
+      writtenSummary.appendChild(paragraph);
     }
   });
-
-  // Debug: Tulosta narratiivit
-  console.log("Narratiivit:", writtenSummary.innerHTML);
 
   document.getElementById("resultsContainer").style.display = "block";
 }
