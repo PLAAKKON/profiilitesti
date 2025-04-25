@@ -295,6 +295,16 @@ function showResults() {
   resultsList.innerHTML = "";
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
 
+  // Suodata matalan koulutuksen ammatit, jos vastaaja on korkeakoulutettu
+  if (answers["Q7"] === "c") { // Korkeakoulutus
+    const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    lowEducationJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
+      }
+    });
+  }
+
   // Näytä tulokset, jotka ylittävät kynnyksen
   Object.entries(results).forEach(([id, prof]) => {
     if (prof.score >= prof.threshold) {
