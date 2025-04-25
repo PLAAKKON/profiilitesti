@@ -151,7 +151,7 @@ const results = {
   "21": { name: "Tuotanto- ja kehitysinsinööri, ISCO 21, TK10 214", threshold: 17, score: 0 },
   "22": { name: "Logistiikan ja projektien hallinta, ISCO 21, TK10 132-242", threshold: 17, score: 0 },
   "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
-  "24": { name: "Urheilu- ja liiLuova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
+  "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
   "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 16, score: 0 },
