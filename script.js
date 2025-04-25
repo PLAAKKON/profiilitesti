@@ -1,100 +1,102 @@
 const questions = [
   {
     id: "Q1",
-    text: "1/10 Millainen työskentelytapa sopii sinulle parhaiten?",
+    text: "1/10 Kuvaus työskentelytavastasi:",
     options: {
-      a: { label: "Itsenäinen työ ilman jatkuvaa ohjausta", points: { 1: 2, 2: 1 } },
-      b: { label: "Itsenäinen työ hyvän perehdytyksen jälkeen", points: { 1: 1, 3: 2 } },
-      c: { label: "Yhdistelmä itsenäistä työtä ja ohjausta", points: { 2: 2, 4: 1 } },
-      d: { label: "Tiimityö vastuunjaolla", points: { 3: 1, 4: 2 } },
-      e: { label: "Selkeä ohjaus ja yhteistyö", points: { 2: 1, 3: 2 } }
+      a: { label: "Olen itsenäinen työntekijä ja perehdyn mielelläni työohjeisiin omatoimisesti.", points: { 1: 2, 2: 2, 3: 2, 4: 1, 5: 2, 6: 2, 8: 1, 12: 2, 13: 2, 14: 1, 15: 1, 16: 1, 17: 2, 18: 2, 19: 1, 20: 1, 21: 1, 22: 1, 23: 2, 24: 2, 25: 2, 26: 1, 27: 2, 28: 2, 29: 1, 30: 1, 31: 1, 32: 1 } },
+      b: { label: "Arvostan perusteellista perehdytystä, jonka avulla voin työskennellä itsenäisesti.", points: { 1: 2, 2: 2, 3: 2, 4: 1, 5: 2, 6: 2, 8: 1, 9: 1, 10: 1, 11: 1, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      c: { label: "Pidän itsenäisestä työskentelystä, mutta arvostan myös säännöllistä ohjausta.", points: { 1: 1, 2: 1, 3: 1, 5: 1, 6: 1, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 1, 18: 1, 19: 2, 20: 2, 21: 2, 22: 2, 23: 1, 24: 1, 25: 1, 26: 1, 27: 1, 28: 1, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      d: { label: "Olen sosiaalinen ja viihdyn tiimityössä.", points: { 1: 1, 2: 1, 5: 2, 6: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      e: { label: "Pidän selkeästä ohjauksesta ja viihdyn tiimityössä.", points: { 5: 2, 6: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } }
     }
   },
   {
     id: "Q2",
     text: "2/10 Millaista työympäristöä arvostat?",
     options: {
-      a: { label: "Fyysisesti raskas ja vaativa työ", points: { 1: 2, 2: 1 } },
-      b: { label: "Aktiivinen mutta ei fyysisesti raskas ympäristö", points: { 3: 2, 4: 1 } },
-      c: { label: "Toimistopainotteinen ja tarkkuutta vaativa", points: { 2: 1, 3: 2 } },
-      d: { label: "Rauhallinen ja mentaalinen työ", points: { 4: 2, 5: 1 } }
+      a: { label: "Olen valmis fyysiseen ja käytännönläheiseen työhön.", points: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 1, 6: 2, 20: 2 } },
+      b: { label: "Pidän toiminnallisesta työstä, jossa saan olla liikkeessä.", points: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 1, 6: 2, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1, 19: 1, 20: 2, 21: 1, 22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } },
+      c: { label: "Pidän keskittymistä ja tarkkuutta vaativasta työstä.", points: { 3: 1, 5: 1, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      d: { label: "Nautin vuorovaikutteisesta työstä sosiaalisessa ympäristössä.", points: { 5: 1, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } }
     }
   },
   {
     id: "Q3",
-    text: "3/10 Missä ympäristössä viihdyt parhaiten?",
+    text: "3/10 Kumpi kuvaa sinua paremmin?",
     options: {
-      a: { label: "Sisätiloissa", points: { 2: 2, 3: 1 } },
-      b: { label: "Ulkona", points: { 1: 2, 4: 1 } },
-      c: { label: "Vaihtelevissa ympäristöissä", points: { 3: 2, 5: 1 } },
-      d: { label: "Sosiaalisessa ympäristössä", points: { 4: 2, 5: 2 } }
+      a: { label: "Pidän työskentelystä sisätiloissa rauhallisessa ympäristössä.", points: { 1: 2, 2: 2, 3: 2, 5: 1, 6: 2, 8: 1, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      b: { label: "Tykkään työskennellä ulkona tai liikkuvassa työssä.", points: { 3: 1, 4: 2, 5: 2, 8: 1, 9: 1, 10: 1, 11: 1, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } },
+      c: { label: "Viihdyn vaihtelevissa työympäristöissä ja monipuolisissa tehtävissä.", points: { 1: 1, 2: 1, 3: 2, 4: 2, 5: 2, 6: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      d: { label: "Sosiaaliset ympäristöt ja asiakaspalvelu motivoivat minua.", points: { 5: 1, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } }
     }
   },
   {
     id: "Q4",
-    text: "4/10 Kuinka tärkeää itsenäisyys on työssäsi?",
+    text: "4/10 Miten suhtaudut päätöksentekoon työssä?",
     options: {
-      a: { label: "Erittäin tärkeää", points: { 1: 2, 2: 1 } },
-      b: { label: "Melko tärkeää", points: { 2: 2, 3: 1 } },
-      c: { label: "Ei kovin tärkeää", points: { 3: 2, 4: 1 } },
-      d: { label: "Ei lainkaan tärkeää", points: { 4: 2, 5: 1 } }
+      a: { label: "Työskentelen mielelläni itsenäisesti ja hallitsen itse aikatauluni.", points: { 1: 2, 2: 2, 3: 1, 6: 2, 12: 2, 13: 2, 14: 1, 15: 1, 16: 1, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 1, 25: 1, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      b: { label: "Pidän työstä, jossa voin tehdä päätöksiä itsenäisesti, mutta tarvittaessa teen yhteistyötä.", points: { 1: 2, 2: 2, 3: 2, 4: 1, 5: 1, 6: 2, 8: 1, 9: 1, 10: 1, 11: 1, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      c: { label: "Työskentelen mielelläni tiimissä, jossa yhteistyö on tärkeässä roolissa.", points: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 2, 6: 1, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 2, 25: 2, 26: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } },
+      d: { label: "Nautin vuorovaikutuksesta ja ihmisläheisestä työstä.", points: { 5: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } }
     }
   },
   {
     id: "Q5",
-    text: "5/10 Kuinka paljon haluat käyttää tietotekniikkaa työssäsi?",
+    text: "5/10 Suhde tietotekniikkaan työssä:",
     options: {
-      a: { label: "Paljon", points: { 5: 2, 3: 1 } },
-      b: { label: "Kohtuullisesti", points: { 3: 2, 4: 1 } },
-      c: { label: "Vähän", points: { 2: 2, 1: 1 } },
-      d: { label: "Ei lainkaan", points: { 1: 2, 2: 1 } }
+      a: { label: "Olen taitava tietotekniikan käyttäjä ja hyödynnän sujuvasti erilaisia ohjelmistoja.", points: { 1: 1, 2: 1, 5: 2, 7: 2, 8: 1, 10: 1, 11: 1, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      b: { label: "Hyödynnän tietotekniikkaa tarvittaessa ja pidän monipuolisista tehtävistä.", points: { 1: 2, 2: 2, 3: 1, 4: 1, 5: 2, 6: 1, 7: 2, 8: 2, 9: 1, 10: 2, 11: 2, 12: 1, 13: 1, 14: 1, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      c: { label: "Viihdyn käytännön tekemiseen painottuvissa työtehtävissä.", points: { 1: 1, 2: 1, 3: 2, 4: 2, 5: 1, 6: 2, 7: 1, 8: 1, 9: 2, 10: 1, 11: 1, 15: 1, 16: 1 } },
+      d: { label: "Toivon löytäväni työn, jossa ei juuri tarvitse käyttää tietokonetta.", points: { 3: 2, 4: 2, 6: 2, 9: 2 } },
+      e: { label: "Olen joustava tehtävien suhteen, oli tietokoneen käyttöä paljon tai vähän.", points: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } }
     }
   },
   {
     id: "Q6",
-    text: "6/10 Kuinka joustavat työajat sopivat sinulle?",
+    text: "6/10 Mitä ajattelet työajoista?",
     options: {
-      a: { label: "Täysin joustavat", points: { 1: 2, 5: 1 } },
-      b: { label: "Osittain joustavat", points: { 2: 2, 4: 1 } },
-      c: { label: "Kiinteät työajat", points: { 3: 2, 5: 1 } },
-      d: { label: "Ei väliä", points: { 4: 2, 1: 1 } }
+      a: { label: "Arvostan täysin joustavia työaikoja, jotka voin päättää itse.", points: { 1: 2, 2: 2, 3: 1, 4: 1, 5: 2, 6: 2, 7: 2, 8: 1, 9: 1, 10: 1, 11: 1, 12: 2, 13: 2, 14: 2, 15: 2, 16: 1, 17: 2, 18: 2, 19: 1, 20: 1, 21: 1, 22: 1, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 1, 30: 1, 31: 1, 32: 1 } },
+      b: { label: "Joustavat työajat sopisivat minulle hyvin.", points: { 1: 2, 2: 2, 3: 1, 4: 1, 5: 2, 6: 2, 7: 2, 8: 1, 9: 1, 10: 1, 11: 1, 12: 2, 13: 2, 14: 2, 15: 2, 16: 1, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      c: { label: "Pidän kiinteistä työajoista, jotka tuovat selkeyttä arkeen.", points: { 3: 2, 4: 2, 7: 2, 8: 1, 9: 1, 10: 2, 11: 2, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1, 19: 2, 20: 2, 21: 2, 22: 2, 23: 1, 26: 1, 27: 1, 28: 1, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      d: { label: "Sopeudun sekä kiinteisiin että joustaviin aikatauluihin.", points: { 1: 1, 2: 1, 3: 2, 4: 2, 5: 1, 6: 1, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } }
     }
   },
   {
     id: "Q7",
     text: "7/10 Mikä on koulutustaustasi?",
     options: {
-      a: { label: "Ei muodollista koulutusta", points: { 1: 2, 2: 1 } },
-      b: { label: "Ammatillinen koulutus", points: { 3: 2, 4: 1 } },
-      c: { label: "Korkeakoulutus", points: { 5: 2, 4: 1 } }
+      a: { label: "Olen oppinut työni käytännössä, ilman muodollista koulutusta.", points: { 12: -2, 13: -1, 14: -2, 15: -2, 17: -2, 19: -2, 21: -3, 22: -3, 23: -3 } },
+      b: { label: "Olen suorittanut keskiasteen koulutuksen (esim. ammattikoulu).", points: { 12: -1, 13: -1, 14: -1, 17: -2, 19: -2, 21: -3, 22: -2, 23: -1 } },
+      c: { label: "Minulla on korkeakoulututkinto.", points: { 23: -100 } }
     }
   },
   {
     id: "Q8",
-    text: "8/10 Oletko valmis opiskelemaan uutta?",
+    text: "8/10 Miten suhtaudut alan vaihtoon ja opiskeluun?",
     options: {
-      a: { label: "Kyllä, täysin valmis", points: { 5: 2, 3: 1 } },
-      b: { label: "Kyllä, mutta vain nykyisellä alalla", points: { 3: 2, 4: 1 } },
-      c: { label: "En tällä hetkellä", points: { 2: 2, 1: 1 } },
-      d: { label: "En lainkaan", points: { 1: 2, 2: 1 } }
+      a: { label: "Olen avoin uusille mahdollisuuksille ja valmis opiskelemaan uutta alaa varten.", points: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      b: { label: "Haluan syventää osaamistani nykyisellä alallani ja olen valmis opiskelemaan uutta.", points: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 1, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      c: { label: "Olen avoin alanvaihdolle, mutta en voi sitoutua uusiin opintoihin.", points: { 1: 1, 2: 1, 3: 2, 4: 2, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 1, 25: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } },
+      d: { label: "Haluan jatkaa nykyisellä alallani enkä suunnittele lisäkoulutusta.", points: {} },
+      e: { label: "Olen valmis vaihtamaan alaa, jolle nykyiset taitoni riittävät (ilman uutta koulutusta).", points: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 1, 25: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } }
     }
   },
   {
     id: "Q9",
     text: "9/10 Millainen työsuhde sopii sinulle parhaiten?",
     options: {
-      a: { label: "Vakituisuus", points: { 3: 2, 4: 1 } },
-      b: { label: "Määräaikaisuus", points: { 2: 2, 1: 1 } },
-      c: { label: "Freelancer-työ", points: { 5: 2, 3: 1 } }
+      a: { label: "Etsin vakituista työpaikkaa ja arvostan työn vakautta.", points: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 1, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      b: { label: "Voin työskennellä sekä vakituisessa että määräaikaisessa työsuhteessa.", points: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 1, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      c: { label: "Pidän freelancer-työn vapaudesta ja oman työajan hallinnasta.", points: { 25: 2 } }
     }
   },
   {
     id: "Q10",
-    text: "10/10 Kuinka tärkeää jatkuva oppiminen on sinulle?",
+    text: "10/10 Miten suhtaudut osaamisen kehittämiseen työssäsi?",
     options: {
-      a: { label: "Erittäin tärkeää", points: { 5: 2, 3: 1 } },
-      b: { label: "Melko tärkeää", points: { 3: 2, 4: 1 } },
-      c: { label: "Ei kovin tärkeää", points: { 2: 2, 1: 1 } }
+      a: { label: "Olen sitoutunut jatkuvaan oppimiseen ja kehitän aktiivisesti osaamistani.", points: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2 } },
+      b: { label: "Kehitän mielelläni taitojani, kunhan tahti on kohtuullinen.", points: { 1: 2, 2: 2, 3: 2, 4: 1, 5: 1, 6: 2, 7: 1, 8: 2, 9: 2, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } },
+      c: { label: "Haluan, että työssäni riittää nykyiset taitoni.", points: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1, 19: 1, 20: 1, 21: 1, 22: 1, 23: 1, 24: 1, 25: 1, 26: 1, 27: 1, 28: 1, 29: 1, 30: 1, 31: 1, 32: 1 } }
     }
   }
 ];
