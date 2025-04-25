@@ -268,14 +268,13 @@ function showResults() {
   });
 
   // Näytä narratiivit vastausten perusteella
-  let hasNarratives = false; // Tarkistetaan, onko narratiiveja
+  let hasNarratives = false;
   Object.entries(answers).forEach(([qid, opt]) => {
-    if (narratives[qid] && narratives[qid][opt]) {
-      const paragraph = document.createElement("p");
-      paragraph.innerHTML = "• " + narratives[qid][opt]; // Käytetään innerHTML, jotta HTML-tunnisteet näkyvät oikein
-      writtenSummary.appendChild(paragraph);
-      hasNarratives = true;
-    }
+    const narrative = narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla.";
+    const paragraph = document.createElement("p");
+    paragraph.innerHTML = "• " + narrative;
+    writtenSummary.appendChild(paragraph);
+    hasNarratives = true;
   });
 
   // Näytä sanallinen arvio, jos narratiiveja on
