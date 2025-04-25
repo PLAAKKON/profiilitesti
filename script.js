@@ -254,6 +254,7 @@ function showResults() {
   document.getElementById("questionContainer").style.display = "none";
   const resultsList = document.getElementById("resultsList");
   const writtenSummary = document.getElementById("writtenSummary");
+  const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
   resultsList.innerHTML = "";
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
 
@@ -267,13 +268,20 @@ function showResults() {
   });
 
   // Näytä narratiivit vastausten perusteella
+  let hasNarratives = false; // Tarkistetaan, onko narratiiveja
   Object.entries(answers).forEach(([qid, opt]) => {
     if (narratives[qid] && narratives[qid][opt]) {
       const paragraph = document.createElement("p");
       paragraph.innerHTML = "• " + narratives[qid][opt]; // Käytetään innerHTML, jotta HTML-tunnisteet näkyvät oikein
       writtenSummary.appendChild(paragraph);
+      hasNarratives = true;
     }
   });
+
+  // Näytä sanallinen arvio, jos narratiiveja on
+  if (hasNarratives) {
+    writtenSummaryContainer.style.display = "block";
+  }
 
   document.getElementById("resultsContainer").style.display = "block";
 }
