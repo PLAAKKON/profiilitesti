@@ -336,16 +336,14 @@ function showResults() {
 const restartButton = document.createElement("button");
 restartButton.textContent = "Palaa alkuun";
 restartButton.style.marginTop = "20px";
+restartButton.style.display = "block"; // Asetetaan nappi blokiksi
+restartButton.style.marginLeft = "auto"; // Keskitys vaakasuunnassa
+restartButton.style.marginRight = "auto"; // Keskitys vaakasuunnassa
 restartButton.onclick = () => {
   document.getElementById("resultsContainer").style.display = "none";
   document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
   currentQuestionIndex = 0;
   Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
-
-  // Poista "Palaa alkuun" -nappi
-  restartButton.remove();
 };
 document.getElementById("resultsContainer").appendChild(restartButton);
-
-  document.getElementById("resultsContainer").style.display = "block";
 }
