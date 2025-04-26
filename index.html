@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profiilitesti – Yoro Oy</title>
+  <title>Profiilitesti</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
   <div class="container" style="text-align: center; max-width: 600px; margin: 0 auto; padding: 20px;">
-    
     <h1>Profiilitesti</h1>
 
     <p>Profiilitesti on Yoro Oy:n kehittämä testityökalu, jonka avulla yksilö voi arvioida itselleen sopivia ammatteja.</p>
@@ -24,28 +23,21 @@
 
     <div id="questionContainer" style="margin: 20px 0;"></div>
 
-    <button 
-      id="toggleButton" 
-      type="button" 
-      style="margin-top: 20px; padding: 12px 24px; font-size: 1.1em; border-radius: 8px; background-color: #007BFF; color: white; border: none; cursor: pointer; transition: background-color 0.3s ease;"
-    >
-      Aloita kysely
-    </button>
-
+    <div id="buttonContainer" style="text-align: center;">
+      <button 
+        id="toggleButton" 
+        type="button" 
+        style="margin-top: 20px; padding: 12px 24px; font-size: 1.1em; border-radius: 8px; background-color: #007BFF; color: white; border: none; cursor: pointer; transition: background-color 0.3s ease;"
+      >
+        Aloita kysely
+      </button>
+    </div>
+    
     <div id="resultsContainer" style="margin-top: 30px; display: none;">
       <h2>Sinulle sopivat ammatit:</h2>
       <ul id="resultsList"></ul>
-
       <div id="writtenSummaryContainer" style="margin-top: 20px; display: none;">
         <h3>Sanallinen arvio profiilistasi:</h3>
         <div id="writtenSummary" style="padding-left: 20px; margin: 0;"></div>
       </div>
     </div>
-
-    <p style="margin-top: 40px; font-size: 0.9em; color: #777;">© 2025 Yoro Oy</p>
-
-  </div>
-
-  <script src="script.js" type="module"></script>
-</body>
-</html>
