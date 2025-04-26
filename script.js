@@ -227,6 +227,9 @@ let currentQuestionIndex = 0;
 const answers = {};
 
 document.getElementById("toggleButton").addEventListener("click", () => {
+  const toggleButton = document.getElementById("toggleButton");
+  toggleButton.style.display = "none"; // Piilotetaan nappi
+
   if (currentQuestionIndex === 0) {
     currentQuestionIndex = 0;
     Object.keys(answers).forEach(key => delete answers[key]);
