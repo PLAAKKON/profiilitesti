@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profiilitesti</title>
+  <title>Profiilitesti – Yoro Oy</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="container">
-    <h1>Työprofiilikysely</h1>
+    <h1>Profiilitesti</h1>
+
     <p>
-      Tämä kysely auttaa sinua selvittämään, millaiset ammatit sopivat sinulle parhaiten.
-      Vastaa 10 kysymykseen ja saat henkilökohtaisen profiilisi sekä sanallisen arvion.
+      Profiilitesti on Yoro Oy:n kehittämä testityökalu, jonka avulla yksilö voi arvioida itselleen sopivia ammatteja.<br /><br />
+      Vastaa 10 kysymykseen ja saat henkilökohtaisen profiilisi sekä sanallisen arvion.<br /><br />
+      Testi on tarkoitettu vain arviointiin, ei kaupalliseen käyttöön. .<br /><br />
+      <strong>Käyttöehdot:</strong><br />
+      Katso lisenssi kohdasta <em>license.txt</em>.<br /><br />
+      © 2025 Yoro Oy
     </p>
 
     <div id="questionContainer" style="margin: 20px 0;"></div>
@@ -21,12 +27,13 @@
       type="button" 
       style="margin-top: 20px; padding: 10px 15px;"
     >
-      Aloita kysely
+      Aloita testi
     </button>
 
     <div id="resultsContainer" style="margin-top: 30px; display: none;">
       <h2>Sinulle sopivat ammatit:</h2>
       <ul id="resultsList"></ul>
+
       <div id="writtenSummaryContainer" style="margin-top: 20px; display: none;">
         <h3>Sanallinen arvio profiilistasi:</h3>
         <div id="writtenSummary" style="padding-left: 20px; margin: 0;"></div>
