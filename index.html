@@ -3,20 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profiilitesti</title>
+  <title>Profiilitesti – Yoro Oy</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="container">
     <h1>Työprofiilikysely</h1>
+
+    <p>Profiilitesti on Yoro Oy:n kehittämä testityökalu, jonka avulla yksilö voi arvioida itselleen sopivia ammatteja.</p>
+
+    <p>Vastaa 10 kysymykseen ja saat henkilökohtaisen profiilisi sekä sanallisen arvion.</p>
+
+    <p>Testi on tarkoitettu vain arviointiin, ei kaupalliseen käyttöön.</p>
+
+    <p><strong>Käyttöehdot:</strong> Katso lisenssi kohdasta 
+      <a href="https://github.com/plaakkon/profiilitesti/blob/main/license.txt" target="_blank" style="text-decoration: underline; color: #007BFF;">license.txt</a>.
+    </p>
+
+    <p style="margin-top: 30px; font-size: 0.9em; color: #777;">© 2025 Yoro Oy</p>
+
     <div id="questionContainer" style="margin: 20px 0;"></div>
+
     <button 
       id="toggleButton" 
       type="button" 
       style="margin-top: 20px; padding: 10px 15px;"
     >
-      Näytä tulokset
+      Aloita kysely
     </button>
+
     <div id="resultsContainer" style="margin-top: 30px; display: none;">
       <h2>Sinulle sopivat ammatit:</h2>
       <ul id="resultsList"></ul>
@@ -26,6 +42,8 @@
       </div>
     </div>
   </div>
+
   <script src="script.js" type="module"></script>
 </body>
 </html>
+
