@@ -332,6 +332,9 @@ function showResults() {
     writtenSummaryContainer.style.display = "block";
   }
 
+  // 🔵 Tämä poistaa vanhat napit ja tulokset
+  document.getElementById("resultsContainer").innerHTML = "";
+
   // Lisää "Palaa alkuun" -nappi
   const restartButton = document.createElement("button");
   restartButton.textContent = "Palaa alkuun";
