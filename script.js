@@ -292,6 +292,10 @@ function handleAnswer(qid, option) {
 
 function showResults() {
   document.getElementById("questionContainer").style.display = "none";
+
+  // 🔵 Tämä poistaa vanhat napit ja tulokset
+  document.getElementById("resultsContainer").innerHTML = "";
+
   const resultsList = document.getElementById("resultsList");
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
@@ -331,9 +335,6 @@ function showResults() {
   if (hasNarratives) {
     writtenSummaryContainer.style.display = "block";
   }
-
-  // 🔵 Tämä poistaa vanhat napit ja tulokset
-  document.getElementById("resultsContainer").innerHTML = "";
 
   // Lisää "Palaa alkuun" -nappi
   const restartButton = document.createElement("button");
