@@ -8,8 +8,8 @@
 </head>
 
 <body>
-  <div style="text-align: center; max-width: 600px; margin: 0 auto; padding: 20px;">
-    <h1>Profiilitesti</h1>
+  <div class="container">
+    <h1>Työprofiilikysely</h1>
 
     <p>Profiilitesti on Yoro Oy:n kehittämä testityökalu, jonka avulla yksilö voi arvioida itselleen sopivia ammatteja.</p>
 
@@ -23,9 +23,27 @@
 
     <p style="margin-top: 30px; font-size: 0.9em; color: #777;">© 2025 Yoro Oy</p>
 
-    <button id="startButton" onclick="startTest()" style="margin-top: 20px; padding: 10px 20px; font-size: 1.1em;">Aloita testi</button>
+    <div id="questionContainer" style="margin: 20px 0;"></div>
+
+    <button 
+      id="toggleButton" 
+      type="button" 
+      style="margin-top: 20px; padding: 10px 15px;"
+    >
+      Aloita kysely
+    </button>
+
+    <div id="resultsContainer" style="margin-top: 30px; display: none;">
+      <h2>Sinulle sopivat ammatit:</h2>
+      <ul id="resultsList"></ul>
+      <div id="writtenSummaryContainer" style="margin-top: 20px; display: none;">
+        <h3>Sanallinen arvio profiilistasi:</h3>
+        <div id="writtenSummary" style="padding-left: 20px; margin: 0;"></div>
+      </div>
+    </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js" type="module"></script>
 </body>
 </html>
+
