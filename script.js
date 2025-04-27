@@ -398,3 +398,4 @@ restartButton.onclick = () => {
 document.getElementById("resultsContainer").appendChild(restartButton);
 
 document.getElementById("resultsContainer").style.display = "block";
+}
