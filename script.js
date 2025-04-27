@@ -313,17 +313,30 @@ function showResults() {
   }
 
   // Näytä tulokset, jotka ylittävät kynnyksen
-  Object.entries(results).forEach(([id, prof]) => {
-    if (prof.score >= prof.threshold) {
-      const li = document.createElement("li");
-      li.textContent = prof.name;
-      resultsList.appendChild(li);
-    } else if (id === "25.5") { // Erityinen käsittely otsikolle
-      const header = document.createElement("h3");
-      header.textContent = prof.name;
-      resultsList.appendChild(header);
-    }
-  });
+let addedAmmatitHeader = false;
+
+Object.entries(results).forEach(([id, prof]) => {
+  // Lisää otsikko "Ammatit" ennen ensimmäistä ammattia
+  if (!addedAmmatitHeader && id <= "25") {
+    const ammatitHeader = document.createElement("h3");
+    ammatitHeader.textContent = "Ammatit";
+    resultsList.appendChild(ammatitHeader);
+    addedAmmatitHeader = true;
+  }
+
+  if (prof.score >= prof.threshold) {
+    const li = document.createElement("li");
+    li.textContent = prof.name;
+    resultsList.appendChild(li);
+  }
+
+  // Lisää otsikko "Ohjaus- ja tukivaihtoehdot" oikeaan kohtaan (25 jälkeen)
+  if (id === "25") {
+    const header = document.createElement("h3");
+    header.textContent = "Ohjaus- ja tukivaihtoehdot";
+    resultsList.appendChild(header);
+  }
+});
 
   // Näytä narratiivit vastausten perusteella
   let hasNarratives = false;
