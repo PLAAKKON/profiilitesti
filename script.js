@@ -250,10 +250,20 @@ function showResults() {
   const resultsList = document.getElementById("resultsList");
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
-  resultsList.innerHTML = ""; // Tyhjennetään tuloslista
-  writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus
+  resultsList.innerHTML = "";
+  writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
 
-  // Suodata ja näytä tulokset, jotka ylittävät kynnyksen
+  // Suodata matalan koulutuksen ammatit, jos vastaaja on korkeakoulutettu
+  if (answers["Q7"] === "c") { // Korkeakoulutus
+    const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    lowEducationJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
+      }
+    });
+  }
+
+  // Näytä tulokset, jotka ylittävät kynnyksen
   Object.entries(results).forEach(([id, prof]) => {
     if (prof.score >= prof.threshold) {
       const li = document.createElement("li");
@@ -272,13 +282,22 @@ function showResults() {
     hasNarratives = true;
   });
 
-  // Näytä kirjallinen arvio, jos narratiiveja on
+  // Näytä sanallinen arvio, jos narratiiveja on
   if (hasNarratives) {
     writtenSummaryContainer.style.display = "block";
-  } else {
-    writtenSummaryContainer.style.display = "none";
   }
 
-  // Näytä tuloskontaineri
+  // Lisää "Palaa alkuun" -nappi
+  const restartButton = document.createElement("button");
+  restartButton.textContent = "Palaa alkuun";
+  restartButton.style.marginTop = "20px";
+  restartButton.onclick = () => {
+    document.getElementById("resultsContainer").style.display = "none";
+    document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
+    currentQuestionIndex = 0;
+    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+  };
+  document.getElementById("resultsContainer").appendChild(restartButton);
+
   document.getElementById("resultsContainer").style.display = "block";
 }
