@@ -156,7 +156,7 @@ const results = {
 
    // Tyhjät rivit ja otsikko
   "header": { name: "Ohjaus- ja tukivaihtoehdot", threshold: 0, score: -Infinity },
-  
+
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
   "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
   "28": { name: "Johtamisen ja proj. hallinnan täydennyskoulutus", threshold: 16, score: 0 },
@@ -244,55 +244,6 @@ document.getElementById("toggleButton").addEventListener("click", () => {
     showResults();
   }
 });
-
-function showQuestion() {
-  const question = questions[currentQuestionIndex];
-  const container = document.getElementById("questionContainer");
-  container.innerHTML = `<h3>${question.text}</h3>`;
-  Object.entries(question.options).forEach(([key, option]) => {
-    const btn = document.createElement("button");
-    btn.textContent = option.label; // Korjattu: Näytetään label-arvo
-    btn.onclick = () => handleAnswer(question.id, key);
-    container.appendChild(btn);
-    container.appendChild(document.createElement("br"));
-  });
-}
-
-function handleAnswer(qid, option) {
-  answers[qid] = option;
-
-  // Päivitetty pisteytyslogiikka
-  const question = questions.find(q => q.id === qid);
-  if (question && question.options[option]) {
-    const points = question.options[option].points || {};
-    Object.entries(points).forEach(([resultId, score]) => {
-      if (results[resultId]) {
-        results[resultId].score += score;
-      }
-    });
-  }
-
-  // Yhdistelmäehtojen käsittely
-  comboRules.forEach(rule => {
-    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
-      Object.entries(rule.add).forEach(([resultId, score]) => {
-        if (results[resultId]) {
-          results[resultId].score += score;
-        }
-      });
-    }
-  });
-
-  // Debug: Tulosta päivitetyt pisteet
-  console.log("Päivitetyt pisteet:", results);
-
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    showQuestion();
-  } else {
-    showResults();
-  }
-}
 
 function showResults() {
   document.getElementById("questionContainer").style.display = "none";
