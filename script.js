@@ -153,10 +153,6 @@ const results = {
   "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
-
-   // Tyhjät rivit ja otsikko
-  "25.5": { name: "Ohjaus- ja tukivaihtoehdot", threshold: 0, score: -Infinity },
-  
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
   "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
   "28": { name: "Johtamisen ja proj. hallinnan täydennyskoulutus", threshold: 16, score: 0 },
@@ -314,6 +310,7 @@ function showResults() {
 
   // Näytä tulokset, jotka ylittävät kynnyksen
 let addedAmmatitHeader = false;
+let addedOhjausHeader = false;
 
 Object.entries(results).forEach(([id, prof]) => {
   // Lisää otsikko "Ammatit" ennen ensimmäistä ammattia
@@ -324,17 +321,18 @@ Object.entries(results).forEach(([id, prof]) => {
     addedAmmatitHeader = true;
   }
 
+  // Lisää otsikko "Ohjaus- ja tukivaihtoehdot" ennen ensimmäistä ID:tä suurempi kuin 25
+  if (!addedOhjausHeader && id > "25") {
+    const ohjausHeader = document.createElement("h3");
+    ohjausHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
+    resultsList.appendChild(ohjausHeader);
+    addedOhjausHeader = true;
+  }
+
   if (prof.score >= prof.threshold) {
     const li = document.createElement("li");
     li.textContent = prof.name;
     resultsList.appendChild(li);
-  }
-
-  // Lisää otsikko "Ohjaus- ja tukivaihtoehdot" oikeaan kohtaan (25 jälkeen)
-  if (id === "25") {
-    const header = document.createElement("h3");
-    header.textContent = "Ohjaus- ja tukivaihtoehdot";
-    resultsList.appendChild(header);
   }
 });
 
