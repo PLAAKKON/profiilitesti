@@ -154,13 +154,11 @@ const results = {
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
 
-   // Tyhjät rivit ja otsikko
+   // otsikko
   "25.5": { 
-    name: `<div id="25.5" style="margin-top: 30px; display: none;">
-              <h2>Lyhytkoulutukset ja urataidot:</h2>
-            </div>`, 
-    threshold: 0, 
-    score: -Infinity 
+  name: "<span style='font-size: 20px; font-weight: bold;'>Lyhytkoulutukset ja urataidot</span>", 
+  threshold: 0, 
+  score: 0 
   },
   
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
