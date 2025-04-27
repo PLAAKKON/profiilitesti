@@ -137,13 +137,13 @@ const results = {
   "7": { name: "Kunnossapito- ja korjaustyön tukityö, ISCO 72, TK10 723", threshold: 14, score: 0 },
   "8": { name: "Myyntityö ja kassapalvelut, ISCO 52, TK10 522", threshold: 14, score: 0 },
   "9": { name: "Ravintola- ja keittiöalan perustyö, ISCO 51, TK10 512, TK10 513", threshold: 14, score: 0 },
-  "10": { name: "Ravintola- ja keittiöalan perustyö, ISCO 51, TK10 512, TK10 513", threshold: 14, score: 0 },
+  "10": { name: "Lähihoitaja ja lastenhoitaja, ISCO 53, TK10 532, TK10 531", threshold: 14, score: 0 },
   "11": { name: "Opetuksen ja koulunkäynnin tuki, ISCO 23, TK10 531", threshold: 14, score: 0 },
   "12": { name: "Visuaalinen suunnittelu ja graafinen työ, ISCO 21, TK10 216", threshold: 17, score: 0 },
   "13": { name: "Sisällöntuotanto ja kielityö, ISCO 26, TK10 264", threshold: 17, score: 0 },
   "14": { name: "Ohjelmointi ja data-analyysi, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "15": { name: "Prosessi- ja laboratoriotyö, ISCO 31, TK10 311, TK10 312, TK10 313, TK10 315", threshold: 17, score: 0 },
-  "16": { name: "Asakaspalvelu- ja puhlinpalvelutyö, ISCO 42, TK10 422", threshold: 17, score: 0 },
+  "16": { name: "Asiakaspalvelu- ja puhelinpalvelutyö, ISCO 42, TK10 422", threshold: 17, score: 0 },
   "17": { name: "Myynnin ja markkinoinnin suunnitelu, ISCO 24, TK10 243", threshold: 17, score: 0 },
   "18": { name: "Henkilöstöhallinnon tuki, ISCO 44, TK10 441, TK10 442", threshold: 17, score: 0 },
   "19": { name: "Toimistotyö ja taloushallinto, ISCO 4", threshold: 17, score: 0 },
@@ -153,8 +153,12 @@ const results = {
   "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
+
+   // Tyhjät rivit ja otsikko
+  "header": { name: "Ohjaus- ja tukivaihtoehdot", threshold: 0, score: -Infinity },
+
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
-  "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 16, score: 0 },
+  "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
   "28": { name: "Johtamisen ja proj. hallinnan täydennyskoulutus", threshold: 16, score: 0 },
   "29": { name: "CV:n päivittäminen ja työnhakuvalmennus", threshold: 16, score: 0 },
   "30": { name: "Paikalliset työnhakuportaalit ja verkostoituminen", threshold: 16, score: 0 },
@@ -241,55 +245,6 @@ document.getElementById("toggleButton").addEventListener("click", () => {
   }
 });
 
-function showQuestion() {
-  const question = questions[currentQuestionIndex];
-  const container = document.getElementById("questionContainer");
-  container.innerHTML = `<h3>${question.text}</h3>`;
-  Object.entries(question.options).forEach(([key, option]) => {
-    const btn = document.createElement("button");
-    btn.textContent = option.label; // Korjattu: Näytetään label-arvo
-    btn.onclick = () => handleAnswer(question.id, key);
-    container.appendChild(btn);
-    container.appendChild(document.createElement("br"));
-  });
-}
-
-function handleAnswer(qid, option) {
-  answers[qid] = option;
-
-  // Päivitetty pisteytyslogiikka
-  const question = questions.find(q => q.id === qid);
-  if (question && question.options[option]) {
-    const points = question.options[option].points || {};
-    Object.entries(points).forEach(([resultId, score]) => {
-      if (results[resultId]) {
-        results[resultId].score += score;
-      }
-    });
-  }
-
-  // Yhdistelmäehtojen käsittely
-  comboRules.forEach(rule => {
-    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
-      Object.entries(rule.add).forEach(([resultId, score]) => {
-        if (results[resultId]) {
-          results[resultId].score += score;
-        }
-      });
-    }
-  });
-
-  // Debug: Tulosta päivitetyt pisteet
-  console.log("Päivitetyt pisteet:", results);
-
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    showQuestion();
-  } else {
-    showResults();
-  }
-}
-
 function showResults() {
   document.getElementById("questionContainer").style.display = "none";
   const resultsList = document.getElementById("resultsList");
@@ -332,18 +287,17 @@ function showResults() {
     writtenSummaryContainer.style.display = "block";
   }
 
-// Lisää "Palaa alkuun" -nappi
-const restartButton = document.createElement("button");
-restartButton.textContent = "Palaa alkuun";
-restartButton.style.marginTop = "20px";
-restartButton.style.display = "block"; // Asetetaan nappi blokiksi
-restartButton.style.marginLeft = "auto"; // Keskitys vaakasuunnassa
-restartButton.style.marginRight = "auto"; // Keskitys vaakasuunnassa
-restartButton.onclick = () => {
-  document.getElementById("resultsContainer").style.display = "none";
-  document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
-  currentQuestionIndex = 0;
-  Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
-};
-document.getElementById("resultsContainer").appendChild(restartButton);
+  // Lisää "Palaa alkuun" -nappi
+  const restartButton = document.createElement("button");
+  restartButton.textContent = "Palaa alkuun";
+  restartButton.style.marginTop = "20px";
+  restartButton.onclick = () => {
+    document.getElementById("resultsContainer").style.display = "none";
+    document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
+    currentQuestionIndex = 0;
+    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+  };
+  document.getElementById("resultsContainer").appendChild(restartButton);
+
+  document.getElementById("resultsContainer").style.display = "block";
 }
