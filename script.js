@@ -143,7 +143,7 @@ const results = {
   "13": { name: "Sisällöntuotanto ja kielityö, ISCO 26, TK10 264", threshold: 17, score: 0 },
   "14": { name: "Ohjelmointi ja data-analyysi, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "15": { name: "Prosessi- ja laboratoriotyö, ISCO 31, TK10 311, TK10 312, TK10 313, TK10 315", threshold: 17, score: 0 },
-  "16": { name: "Asakaspalvelu- ja puhlinpalvelutyö, ISCO 42, TK10 422", threshold: 17, score: 0 },
+  "16": { name: "Asiakaspalvelu- ja puhelinpalvelutyö, ISCO 42, TK10 422", threshold: 17, score: 0 },
   "17": { name: "Myynnin ja markkinoinnin suunnitelu, ISCO 24, TK10 243", threshold: 17, score: 0 },
   "18": { name: "Henkilöstöhallinnon tuki, ISCO 44, TK10 441, TK10 442", threshold: 17, score: 0 },
   "19": { name: "Toimistotyö ja taloushallinto, ISCO 4", threshold: 17, score: 0 },
@@ -153,8 +153,10 @@ const results = {
   "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
+  
+  
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
-  "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 16, score: 0 },
+  "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
   "28": { name: "Johtamisen ja proj. hallinnan täydennyskoulutus", threshold: 16, score: 0 },
   "29": { name: "CV:n päivittäminen ja työnhakuvalmennus", threshold: 16, score: 0 },
   "30": { name: "Paikalliset työnhakuportaalit ja verkostoituminen", threshold: 16, score: 0 },
@@ -288,61 +290,4 @@ function handleAnswer(qid, option) {
   } else {
     showResults();
   }
-}
-
-function showResults() {
-  document.getElementById("questionContainer").style.display = "none";
-  const resultsList = document.getElementById("resultsList");
-  const writtenSummary = document.getElementById("writtenSummary");
-  const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
-  resultsList.innerHTML = "";
-  writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
-
-  // Suodata matalan koulutuksen ammatit, jos vastaaja on korkeakoulutettu
-  if (answers["Q7"] === "c") { // Korkeakoulutus
-    const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-    lowEducationJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
-      }
-    });
-  }
-
-  // Näytä tulokset, jotka ylittävät kynnyksen
-  Object.entries(results).forEach(([id, prof]) => {
-    if (prof.score >= prof.threshold) {
-      const li = document.createElement("li");
-      li.textContent = prof.name;
-      resultsList.appendChild(li);
-    }
-  });
-
-  // Näytä narratiivit vastausten perusteella
-  let hasNarratives = false;
-  Object.entries(answers).forEach(([qid, opt]) => {
-    const narrative = narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla.";
-    const paragraph = document.createElement("p");
-    paragraph.innerHTML = "• " + narrative;
-    writtenSummary.appendChild(paragraph);
-    hasNarratives = true;
-  });
-
-  // Näytä sanallinen arvio, jos narratiiveja on
-  if (hasNarratives) {
-    writtenSummaryContainer.style.display = "block";
-  }
-
-  // Lisää "Palaa alkuun" -nappi
-  const restartButton = document.createElement("button");
-  restartButton.textContent = "Palaa alkuun";
-  restartButton.style.marginTop = "20px";
-  restartButton.onclick = () => {
-    document.getElementById("resultsContainer").style.display = "none";
-    document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
-    currentQuestionIndex = 0;
-    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
-  };
-  document.getElementById("resultsContainer").appendChild(restartButton);
-
-  document.getElementById("resultsContainer").style.display = "block";
 }
