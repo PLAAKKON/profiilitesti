@@ -137,7 +137,7 @@ const results = {
   "7": { name: "Kunnossapito- ja korjaustyön tukityö, ISCO 72, TK10 723", threshold: 14, score: 0 },
   "8": { name: "Myyntityö ja kassapalvelut, ISCO 52, TK10 522", threshold: 14, score: 0 },
   "9": { name: "Ravintola- ja keittiöalan perustyö, ISCO 51, TK10 512, TK10 513", threshold: 14, score: 0 },
-  "10": { name: "Ravintola- ja keittiöalan perustyö, ISCO 51, TK10 512, TK10 513", threshold: 14, score: 0 },
+  "10": { name: "Lähihoitaja ja lastenhoitaja, ISCO 53, TK10 532, TK10 531", threshold: 14, score: 0 },
   "11": { name: "Opetuksen ja koulunkäynnin tuki, ISCO 23, TK10 531", threshold: 14, score: 0 },
   "12": { name: "Visuaalinen suunnittelu ja graafinen työ, ISCO 21, TK10 216", threshold: 17, score: 0 },
   "13": { name: "Sisällöntuotanto ja kielityö, ISCO 26, TK10 264", threshold: 17, score: 0 },
@@ -332,20 +332,17 @@ function showResults() {
     writtenSummaryContainer.style.display = "block";
   }
 
-// Lisää "Palaa alkuun" -nappi
-const restartButton = document.createElement("button");
-restartButton.textContent = "Palaa alkuun";
-restartButton.style.marginTop = "20px";
-restartButton.onclick = () => {
-  document.getElementById("resultsContainer").style.display = "none";
-  document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
-  currentQuestionIndex = 0;
-  Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
-
-  // Poista "Palaa alkuun" -nappi
-  restartButton.remove();
-};
-document.getElementById("resultsContainer").appendChild(restartButton);
+  // Lisää "Palaa alkuun" -nappi
+  const restartButton = document.createElement("button");
+  restartButton.textContent = "Palaa alkuun";
+  restartButton.style.marginTop = "20px";
+  restartButton.onclick = () => {
+    document.getElementById("resultsContainer").style.display = "none";
+    document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
+    currentQuestionIndex = 0;
+    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+  };
+  document.getElementById("resultsContainer").appendChild(restartButton);
 
   document.getElementById("resultsContainer").style.display = "block";
 }
