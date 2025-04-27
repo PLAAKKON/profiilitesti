@@ -312,17 +312,6 @@ function showResults() {
 const ammatit = [];
 const ohjausJaTuki = [];
 
-// Jaa tulokset kahteen ryhmään
-Object.entries(results).forEach(([id, prof]) => {
-  if (prof.score >= prof.threshold) {
-    if (id <= "25") {
-      ammatit.push(prof.name);
-    } else {
-      ohjausJaTuki.push(prof.name);
-    }
-  }
-});
-
 // Lisää otsikko ja tulokset "Ammatit"
 if (ammatit.length > 0) {
   const ammatitHeader = document.createElement("h3");
