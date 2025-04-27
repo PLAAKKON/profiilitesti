@@ -309,33 +309,33 @@ function showResults() {
   }
 
   // Näytä tulokset, jotka ylittävät kynnyksen
-let addedAmmatitHeader = false;
-let addedOhjausHeader = false;
-
-Object.entries(results).forEach(([id, prof]) => {
-  // Lisää otsikko "Ammatit" ennen ensimmäistä ammattia
-  if (!addedAmmatitHeader && id <= "25") {
-    const ammatitHeader = document.createElement("h3");
-    ammatitHeader.textContent = "Ammatit";
-    resultsList.appendChild(ammatitHeader);
-    addedAmmatitHeader = true;
-  }
-
-  // Lisää otsikko "Ohjaus- ja tukivaihtoehdot" ennen ensimmäistä ID:tä suurempi kuin 25
-  if (!addedOhjausHeader && id > "25") {
-    const ohjausHeader = document.createElement("h3");
-    ohjausHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
-    resultsList.appendChild(ohjausHeader);
-    addedOhjausHeader = true;
-  }
-
-  // Lisää tulos, jos pisteet ylittävät kynnyksen
-  if (prof.score >= prof.threshold) {
-    const li = document.createElement("li");
-    li.textContent = prof.name;
-    resultsList.appendChild(li);
-  }
-});
+  let addedAmmatitHeader = false;
+  let addedOhjausHeader = false;
+  
+  Object.entries(results).forEach(([id, prof]) => {
+    // Lisää otsikko "Ammatit" ennen ensimmäistä ammattia
+    if (!addedAmmatitHeader && id <= "25") {
+      const ammatitHeader = document.createElement("h3");
+      ammatitHeader.textContent = "Ammatit";
+      resultsList.appendChild(ammatitHeader);
+      addedAmmatitHeader = true;
+    }
+  
+    // Lisää otsikko "Ohjaus- ja tukivaihtoehdot" ennen ensimmäistä ID:tä suurempi kuin 25
+    if (!addedOhjausHeader && id > "25") {
+      const ohjausHeader = document.createElement("h3");
+      ohjausHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
+      resultsList.appendChild(ohjausHeader);
+      addedOhjausHeader = true;
+    }
+  
+    // Lisää tulos, jos pisteet ylittävät kynnyksen
+    if (prof.score >= prof.threshold) {
+      const li = document.createElement("li");
+      li.textContent = prof.name;
+      resultsList.appendChild(li);
+    }
+  });
 
   // Näytä narratiivit vastausten perusteella
   let hasNarratives = false;
