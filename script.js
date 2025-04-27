@@ -153,8 +153,10 @@ const results = {
   "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
-  
-  
+
+   // Tyhjät rivit ja otsikko
+  "header": { name: "Ohjaus- ja tukivaihtoehdot", threshold: 0, score: -Infinity },
+
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
   "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
   "28": { name: "Johtamisen ja proj. hallinnan täydennyskoulutus", threshold: 16, score: 0 },
@@ -251,25 +253,9 @@ function showResults() {
   resultsList.innerHTML = ""; // Tyhjennetään tuloslista
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus
 
-  let supportHeaderAdded = false;
-
   // Suodata ja näytä tulokset, jotka ylittävät kynnyksen
   Object.entries(results).forEach(([id, prof]) => {
     if (prof.score >= prof.threshold) {
-      const numericId = Number(id);
-
-      // Lisää väliotsikko ennen ensimmäistä tukivaihtoehtoa
-      if (numericId === 26 && !supportHeaderAdded) {
-        const spacer = document.createElement("br");
-        resultsList.appendChild(spacer);
-
-        const supportHeader = document.createElement("h3");
-        supportHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
-        resultsList.appendChild(supportHeader);
-
-        supportHeaderAdded = true;
-      }
-
       const li = document.createElement("li");
       li.textContent = prof.name;
       resultsList.appendChild(li);
