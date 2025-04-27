@@ -153,10 +153,6 @@ const results = {
   "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
-
-   // Tyhjät rivit ja otsikko
-  "header": { name: "Ohjaus- ja tukivaihtoehdot", threshold: 0, score: -Infinity },
-  
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
   "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
   "28": { name: "Johtamisen ja proj. hallinnan täydennyskoulutus", threshold: 16, score: 0 },
@@ -245,55 +241,6 @@ document.getElementById("toggleButton").addEventListener("click", () => {
   }
 });
 
-function showQuestion() {
-  const question = questions[currentQuestionIndex];
-  const container = document.getElementById("questionContainer");
-  container.innerHTML = `<h3>${question.text}</h3>`;
-  Object.entries(question.options).forEach(([key, option]) => {
-    const btn = document.createElement("button");
-    btn.textContent = option.label; // Korjattu: Näytetään label-arvo
-    btn.onclick = () => handleAnswer(question.id, key);
-    container.appendChild(btn);
-    container.appendChild(document.createElement("br"));
-  });
-}
-
-function handleAnswer(qid, option) {
-  answers[qid] = option;
-
-  // Päivitetty pisteytyslogiikka
-  const question = questions.find(q => q.id === qid);
-  if (question && question.options[option]) {
-    const points = question.options[option].points || {};
-    Object.entries(points).forEach(([resultId, score]) => {
-      if (results[resultId]) {
-        results[resultId].score += score;
-      }
-    });
-  }
-
-  // Yhdistelmäehtojen käsittely
-  comboRules.forEach(rule => {
-    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
-      Object.entries(rule.add).forEach(([resultId, score]) => {
-        if (results[resultId]) {
-          results[resultId].score += score;
-        }
-      });
-    }
-  });
-
-  // Debug: Tulosta päivitetyt pisteet
-  console.log("Päivitetyt pisteet:", results);
-
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    showQuestion();
-  } else {
-    showResults();
-  }
-}
-
 function showResults() {
   document.getElementById("questionContainer").style.display = "none";
   const resultsList = document.getElementById("resultsList");
@@ -312,9 +259,29 @@ function showResults() {
     });
   }
 
-  // Näytä tulokset, jotka ylittävät kynnyksen
+  // Lisää otsikko ammateille
+  const jobsHeading = document.createElement("h3");
+  jobsHeading.textContent = "Ammatit:";
+  resultsList.appendChild(jobsHeading);
+
+  // Näytä ammatit (ID:t 1–25)
   Object.entries(results).forEach(([id, prof]) => {
-    if (prof.score >= prof.threshold) {
+    if (prof.score >= prof.threshold && parseInt(id) <= 25) {
+      const li = document.createElement("li");
+      li.textContent = prof.name;
+      resultsList.appendChild(li);
+    }
+  });
+
+  // Lisää otsikko koulutusehdotuksille ennen niiden listaa
+  const educationHeading = document.createElement("h3");
+  educationHeading.textContent = "Koulutusehdotukset:";
+  educationHeading.style.marginTop = "20px"; // Lisää marginaalia, jos haluat
+  resultsList.appendChild(educationHeading);
+
+  // Näytä koulutusehdotukset (ID:t 26–32)
+  Object.entries(results).forEach(([id, prof]) => {
+    if (prof.score >= prof.threshold && parseInt(id) > 25) {
       const li = document.createElement("li");
       li.textContent = prof.name;
       resultsList.appendChild(li);
