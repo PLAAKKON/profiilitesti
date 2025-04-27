@@ -153,14 +153,6 @@ const results = {
   "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
-
-   // otsikko
-  "25.5": { 
-  name: "<span style='font-size: 20px; font-weight: bold;'>Lyhytkoulutukset ja urataidot</span>", 
-  threshold: 0, 
-  score: 0 
-  },
-  
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
   "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
   "28": { name: "Johtamisen ja proj. hallinnan täydennyskoulutus", threshold: 16, score: 0 },
@@ -316,19 +308,31 @@ function showResults() {
     });
   }
 
-  // Näytä tulokset, jotka ylittävät kynnyksen
+  // Lisää otsikko ammateille
+  const jobsHeading = document.createElement("h3");
+  jobsHeading.textContent = "Ammatit:";
+  resultsList.appendChild(jobsHeading);
+
+  // Näytä ammatit (ID:t 1–25)
   Object.entries(results).forEach(([id, prof]) => {
-    if (prof.score >= prof.threshold) {
-      if (id === "25.5") {
-        // Käsittele "25.5"-kohdan sisältö HTML-muodossa
-        const li = document.createElement("li");
-        li.innerHTML = prof.name; // Käytä innerHTML:ää, jotta tyylit näkyvät
-        resultsList.appendChild(li);
-      } else {
-        const li = document.createElement("li");
-        li.textContent = prof.name;
-        resultsList.appendChild(li);
-      }
+    if (prof.score >= prof.threshold && parseInt(id) <= 25) {
+      const li = document.createElement("li");
+      li.textContent = prof.name;
+      resultsList.appendChild(li);
+    }
+  });
+
+  // Lisää otsikko koulutusehdotuksille
+  const educationHeading = document.createElement("h3");
+  educationHeading.textContent = "Koulutusehdotukset:";
+  resultsList.appendChild(educationHeading);
+
+  // Näytä koulutusehdotukset (ID:t 26–32)
+  Object.entries(results).forEach(([id, prof]) => {
+    if (prof.score >= prof.threshold && parseInt(id) > 25) {
+      const li = document.createElement("li");
+      li.textContent = prof.name;
+      resultsList.appendChild(li);
     }
   });
 
