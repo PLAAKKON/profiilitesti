@@ -329,6 +329,7 @@ Object.entries(results).forEach(([id, prof]) => {
     addedOhjausHeader = true;
   }
 
+  // Lisää tulos, jos pisteet ylittävät kynnyksen
   if (prof.score >= prof.threshold) {
     const li = document.createElement("li");
     li.textContent = prof.name;
