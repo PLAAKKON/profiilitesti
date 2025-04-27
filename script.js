@@ -249,15 +249,25 @@ function showResults() {
   resultsList.innerHTML = "";
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
 
-  // Suodata korkean koulutuksen ammatit, jos vastaaja on matalasti koulutettu
-  if (answers["Q7"] === "a" || answers["Q7"] === "b") { // Matalasti koulutettu
-    const highEducationJobs = [12, 13, 14, 15, 17, 19, 21, 22, 23]; // ID:t korkean koulutuksen ammateille
-    highEducationJobs.forEach(jobId => {
+  // Suodata matalan koulutuksen ammatit, jos vastaaja on korkeakoulutettu
+  if (answers["Q7"] === "c") { // Korkeakoulutus
+    const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    lowEducationJobs.forEach(jobId => {
       if (results[jobId]) {
-        results[jobId].score = 1; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
+        results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
       }
     });
   }
+
+    // Suodata korkean koulutuksen ammatit, jos vastaaja on matalasti koulutettu
+    if (answers["Q7"] === "a" || answers["Q7"] === "b") { // Matalasti koulutettu
+      const highEducationJobs = [12, 13, 14, 15, 17, 19, 21, 22, 23]; // ID:t korkean koulutuksen ammateille
+      highEducationJobs.forEach(jobId => {
+        if (results[jobId]) {
+          results[jobId].score = 1; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
+        }
+      });
+    }
 
   // Lisää otsikko ammateille
   const jobsHeading = document.createElement("h3");
