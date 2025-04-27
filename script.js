@@ -302,15 +302,22 @@ function showResults() {
   resultsList.innerHTML = "";
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
 
-  // Suodata matalan koulutuksen ammatit, jos vastaaja on korkeakoulutettu
-  if (answers["Q7"] === "c") { // Korkeakoulutus
-    const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-    lowEducationJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
-      }
-    });
-  }
+	// Suodata ammatit koulutustason perusteella
+	if (answers["Q7"] === "c") { // Korkeakoulutus
+	const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+	lowEducationJobs.forEach(jobId => {
+		if (results[jobId]) {
+		results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
+		}
+	});
+	} else if (answers["Q7"] === "a" || answers["Q7"] === "b") { // Matalasti koulutettu
+	const highEducationJobs = [12, 13, 14, 15, 17, 19, 21, 22, 23];
+	highEducationJobs.forEach(jobId => {
+		if (results[jobId]) {
+		results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
+		}
+	});
+	}
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   Object.entries(results).forEach(([id, prof]) => {
