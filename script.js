@@ -230,15 +230,16 @@ document.getElementById("toggleButton").addEventListener("click", () => {
   const toggleButton = document.getElementById("toggleButton");
   toggleButton.style.display = "none"; // Piilotetaan nappi
 
-  if (currentQuestionIndex === 0) {
-    currentQuestionIndex = 0;
-    Object.keys(answers).forEach(key => delete answers[key]);
-    document.getElementById("questionContainer").style.display = "block";
-    document.getElementById("resultsContainer").style.display = "none";
-    showQuestion();
-  } else {
-    showResults();
-  }
+  // Aloita kysely alusta
+  currentQuestionIndex = 0;
+  Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+
+  // Näytä kysymysosio ja piilota tulososio
+  document.getElementById("questionContainer").style.display = "block";
+  document.getElementById("resultsContainer").style.display = "none";
+
+  // Näytä ensimmäinen kysymys
+  showQuestion();
 });
 
 function showQuestion() {
