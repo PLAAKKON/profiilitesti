@@ -153,6 +153,10 @@ const results = {
   "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
+
+   // Tyhjät rivit ja otsikko
+  "header": { name: "Ohjaus- ja tukivaihtoehdot", threshold: 0, score: -Infinity },
+  
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
   "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
   "28": { name: "Johtamisen ja proj. hallinnan täydennyskoulutus", threshold: 16, score: 0 },
@@ -224,41 +228,64 @@ const narratives = {
 };
 
 let currentQuestionIndex = 0;
-let answers = {};
+const answers = {};
+
+document.getElementById("toggleButton").addEventListener("click", () => {
+  const toggleButton = document.getElementById("toggleButton");
+  toggleButton.style.display = "none"; // Piilotetaan nappi
+
+  if (currentQuestionIndex === 0) {
+    currentQuestionIndex = 0;
+    Object.keys(answers).forEach(key => delete answers[key]);
+    document.getElementById("questionContainer").style.display = "block";
+    document.getElementById("resultsContainer").style.display = "none";
+    showQuestion();
+  } else {
+    showResults();
+  }
+});
 
 function showQuestion() {
-  const questionContainer = document.getElementById("questionContainer");
-  const questionText = document.getElementById("questionText");
-  const optionsContainer = document.getElementById("optionsContainer");
-
-  // Tyhjennetään edelliset vaihtoehdot
-  optionsContainer.innerHTML = "";
-
-  // Haetaan nykyinen kysymys
-  const currentQuestion = questions[currentQuestionIndex];
-  questionText.textContent = currentQuestion.text;
-
-  // Luodaan vaihtoehdot
-  Object.entries(currentQuestion.options).forEach(([key, option]) => {
-    const button = document.createElement("button");
-    button.textContent = option.label;
-    button.onclick = () => handleAnswer(key);
-    optionsContainer.appendChild(button);
+  const question = questions[currentQuestionIndex];
+  const container = document.getElementById("questionContainer");
+  container.innerHTML = `<h3>${question.text}</h3>`;
+  Object.entries(question.options).forEach(([key, option]) => {
+    const btn = document.createElement("button");
+    btn.textContent = option.label; // Korjattu: Näytetään label-arvo
+    btn.onclick = () => handleAnswer(question.id, key);
+    container.appendChild(btn);
+    container.appendChild(document.createElement("br"));
   });
 }
 
-function handleAnswer(selectedOption) {
-  // Tallennetaan vastaus
-  const currentQuestion = questions[currentQuestionIndex];
-  answers[currentQuestion.id] = selectedOption;
+function handleAnswer(qid, option) {
+  answers[qid] = option;
 
-  // Päivitetään pisteet
-  const selectedPoints = currentQuestion.options[selectedOption].points;
-  Object.entries(selectedPoints).forEach(([id, points]) => {
-    results[id].score += points;
+  // Päivitetty pisteytyslogiikka
+  const question = questions.find(q => q.id === qid);
+  if (question && question.options[option]) {
+    const points = question.options[option].points || {};
+    Object.entries(points).forEach(([resultId, score]) => {
+      if (results[resultId]) {
+        results[resultId].score += score;
+      }
+    });
+  }
+
+  // Yhdistelmäehtojen käsittely
+  comboRules.forEach(rule => {
+    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
+      Object.entries(rule.add).forEach(([resultId, score]) => {
+        if (results[resultId]) {
+          results[resultId].score += score;
+        }
+      });
+    }
   });
 
-  // Siirrytään seuraavaan kysymykseen tai näytetään tulokset
+  // Debug: Tulosta päivitetyt pisteet
+  console.log("Päivitetyt pisteet:", results);
+
   currentQuestionIndex++;
   if (currentQuestionIndex < questions.length) {
     showQuestion();
@@ -275,29 +302,19 @@ function showResults() {
   resultsList.innerHTML = "";
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
 
-  // Lisää otsikko ammateille
-  const jobsHeading = document.createElement("h3");
-  jobsHeading.textContent = "Ammatit:";
-  resultsList.appendChild(jobsHeading);
+  // Suodata matalan koulutuksen ammatit, jos vastaaja on korkeakoulutettu
+  if (answers["Q7"] === "c") { // Korkeakoulutus
+    const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    lowEducationJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
+      }
+    });
+  }
 
-  // Näytä ammatit (ID:t 1–25)
+  // Näytä tulokset, jotka ylittävät kynnyksen
   Object.entries(results).forEach(([id, prof]) => {
-    if (prof.score >= prof.threshold && parseInt(id) <= 25) {
-      const li = document.createElement("li");
-      li.textContent = prof.name;
-      resultsList.appendChild(li);
-    }
-  });
-
-  // Lisää otsikko koulutusehdotuksille ennen niiden listaa
-  const educationHeading = document.createElement("h3");
-  educationHeading.textContent = "Koulutusehdotukset:";
-  educationHeading.style.marginTop = "20px"; // Lisää marginaalia, jos haluat
-  resultsList.appendChild(educationHeading);
-
-  // Näytä koulutusehdotukset (ID:t 26–32)
-  Object.entries(results).forEach(([id, prof]) => {
-    if (prof.score >= prof.threshold && parseInt(id) > 25) {
+    if (prof.score >= prof.threshold) {
       const li = document.createElement("li");
       li.textContent = prof.name;
       resultsList.appendChild(li);
@@ -333,14 +350,3 @@ function showResults() {
 
   document.getElementById("resultsContainer").style.display = "block";
 }
-
-// Käynnistysnappi
-const toggleButton = document.getElementById("toggleButton");
-toggleButton.onclick = () => {
-  toggleButton.style.display = "none"; // Piilotetaan nappi
-  currentQuestionIndex = 0;
-  Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennetään vastaukset
-  document.getElementById("questionContainer").style.display = "block";
-  document.getElementById("resultsContainer").style.display = "none";
-  showQuestion();
-};
