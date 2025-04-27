@@ -309,81 +309,76 @@ function showResults() {
   }
 
   // Näytä tulokset, jotka ylittävät kynnyksen
-const ammatit = [];
-const ohjausJaTuki = [];
+  const ammatit = [];
+  const ohjausJaTuki = [];
 
-// Lisää otsikko ja tulokset "Ammatit"
-if (ammatit.length > 0) {
-  const ammatitHeader = document.createElement("h3");
-  ammatitHeader.textContent = "Ammatit";
-  resultsList.appendChild(ammatitHeader);
-
-  ammatit.forEach(name => {
-    const li = document.createElement("li");
-    li.textContent = name;
-    resultsList.appendChild(li);
-  });
-}
-
-// Jaa tulokset kahteen ryhmään
-Object.entries(results).forEach(([id, prof]) => {
-  if (prof.score >= prof.threshold) {
-    if (parseInt(id) <= 25) { // Käytä parseInt varmistaaksesi oikean vertailun
-      ammatit.push(prof.name);
-    } else {
-      ohjausJaTuki.push(prof.name);
+  Object.entries(results).forEach(([id, prof]) => {
+    if (prof.score >= prof.threshold) {
+      if (parseInt(id) <= 25) { // Käytä parseInt varmistaaksesi oikean vertailun
+        ammatit.push(prof.name);
+      } else {
+        ohjausJaTuki.push(prof.name);
+      }
     }
+  });
+
+  // Lisää otsikko ja tulokset "Ammatit"
+  if (ammatit.length > 0) {
+    const ammatitHeader = document.createElement("h3");
+    ammatitHeader.textContent = "Ammatit";
+    resultsList.appendChild(ammatitHeader);
+
+    ammatit.forEach(name => {
+      const li = document.createElement("li");
+      li.textContent = name;
+      resultsList.appendChild(li);
+    });
   }
-});
 
-// Lisää otsikko ja tulokset "Ammatit"
-if (ammatit.length > 0) {
-  const ammatitHeader = document.createElement("h3");
-  ammatitHeader.textContent = "Ammatit";
-  resultsList.appendChild(ammatitHeader);
+  // Lisää otsikko ja tulokset "Ohjaus- ja tukivaihtoehdot"
+  if (ohjausJaTuki.length > 0) {
+    const ohjausHeader = document.createElement("h3");
+    ohjausHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
+    resultsList.appendChild(ohjausHeader);
 
-  ammatit.forEach(name => {
-    const li = document.createElement("li");
-    li.textContent = name;
-    resultsList.appendChild(li);
-  });
-}
-
-// Lisää otsikko ja tulokset "Ohjaus- ja tukivaihtoehdot"
-if (ohjausJaTuki.length > 0) {
-  const ohjausHeader = document.createElement("h3");
-  ohjausHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
-  resultsList.appendChild(ohjausHeader);
-
-  ohjausJaTuki.forEach(name => {
-    const li = document.createElement("li");
-    li.textContent = name;
-    resultsList.appendChild(li);
-  });
-}
+    ohjausJaTuki.forEach(name => {
+      const li = document.createElement("li");
+      li.textContent = name;
+      resultsList.appendChild(li);
+    });
+  }
 
   // Näytä sanallinen arvio, jos narratiiveja on
+  let hasNarratives = false; // Oletusarvoisesti ei ole narratiiveja
+  Object.entries(answers).forEach(([qid, opt]) => {
+    const narrative = narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla.";
+    const paragraph = document.createElement("p");
+    paragraph.innerHTML = "• " + narrative;
+    writtenSummary.appendChild(paragraph);
+    hasNarratives = true; // Jos narratiivi löytyy, asetetaan true
+  });
+
   if (hasNarratives) {
     writtenSummaryContainer.style.display = "block";
   }
 
-// Poista aiempi "Palaa alkuun" -nappi, jos sellainen on
-const existingRestartButton = document.getElementById("restartButton");
-if (existingRestartButton) {
-  existingRestartButton.remove();
-}
+  // Poista aiempi "Palaa alkuun" -nappi, jos sellainen on
+  const existingRestartButton = document.getElementById("restartButton");
+  if (existingRestartButton) {
+    existingRestartButton.remove();
+  }
 
-// Lisää "Palaa alkuun" -nappi
-const restartButton = document.createElement("button");
-restartButton.textContent = "Palaa alkuun";
-restartButton.style.marginTop = "20px";
-restartButton.onclick = () => {
-  document.getElementById("resultsContainer").style.display = "none";
-  document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
-  currentQuestionIndex = 0;
-  Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
-};
-document.getElementById("resultsContainer").appendChild(restartButton);
+  // Lisää "Palaa alkuun" -nappi
+  const restartButton = document.createElement("button");
+  restartButton.textContent = "Palaa alkuun";
+  restartButton.style.marginTop = "20px";
+  restartButton.onclick = () => {
+    document.getElementById("resultsContainer").style.display = "none";
+    document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
+    currentQuestionIndex = 0;
+    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+  };
+  document.getElementById("resultsContainer").appendChild(restartButton);
 
-document.getElementById("resultsContainer").style.display = "block";
+  document.getElementById("resultsContainer").style.display = "block";
 }
