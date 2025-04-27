@@ -224,22 +224,48 @@ const narratives = {
 };
 
 let currentQuestionIndex = 0;
-const answers = {};
+let answers = {};
 
-document.getElementById("toggleButton").addEventListener("click", () => {
-  const toggleButton = document.getElementById("toggleButton");
-  toggleButton.style.display = "none"; // Piilotetaan nappi
+function showQuestion() {
+  const questionContainer = document.getElementById("questionContainer");
+  const questionText = document.getElementById("questionText");
+  const optionsContainer = document.getElementById("optionsContainer");
 
-  if (currentQuestionIndex === 0) {
-    currentQuestionIndex = 0;
-    Object.keys(answers).forEach(key => delete answers[key]);
-    document.getElementById("questionContainer").style.display = "block";
-    document.getElementById("resultsContainer").style.display = "none";
+  // Tyhjennetään edelliset vaihtoehdot
+  optionsContainer.innerHTML = "";
+
+  // Haetaan nykyinen kysymys
+  const currentQuestion = questions[currentQuestionIndex];
+  questionText.textContent = currentQuestion.text;
+
+  // Luodaan vaihtoehdot
+  Object.entries(currentQuestion.options).forEach(([key, option]) => {
+    const button = document.createElement("button");
+    button.textContent = option.label;
+    button.onclick = () => handleAnswer(key);
+    optionsContainer.appendChild(button);
+  });
+}
+
+function handleAnswer(selectedOption) {
+  // Tallennetaan vastaus
+  const currentQuestion = questions[currentQuestionIndex];
+  answers[currentQuestion.id] = selectedOption;
+
+  // Päivitetään pisteet
+  const selectedPoints = currentQuestion.options[selectedOption].points;
+  Object.entries(selectedPoints).forEach(([id, points]) => {
+    results[id].score += points;
+  });
+
+  // Siirrytään seuraavaan kysymykseen tai näytetään tulokset
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
     showQuestion();
   } else {
     showResults();
   }
-});
+}
 
 function showResults() {
   document.getElementById("questionContainer").style.display = "none";
@@ -307,3 +333,14 @@ function showResults() {
 
   document.getElementById("resultsContainer").style.display = "block";
 }
+
+// Käynnistysnappi
+const toggleButton = document.getElementById("toggleButton");
+toggleButton.onclick = () => {
+  toggleButton.style.display = "none"; // Piilotetaan nappi
+  currentQuestionIndex = 0;
+  Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennetään vastaukset
+  document.getElementById("questionContainer").style.display = "block";
+  document.getElementById("resultsContainer").style.display = "none";
+  showQuestion();
+};
