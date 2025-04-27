@@ -319,9 +319,16 @@ function showResults() {
   // Näytä tulokset, jotka ylittävät kynnyksen
   Object.entries(results).forEach(([id, prof]) => {
     if (prof.score >= prof.threshold) {
-      const li = document.createElement("li");
-      li.textContent = prof.name;
-      resultsList.appendChild(li);
+      if (id === "25.5") {
+        // Käsittele "25.5"-kohdan sisältö HTML-muodossa
+        const li = document.createElement("li");
+        li.innerHTML = prof.name; // Käytä innerHTML:ää, jotta tyylit näkyvät
+        resultsList.appendChild(li);
+      } else {
+        const li = document.createElement("li");
+        li.textContent = prof.name;
+        resultsList.appendChild(li);
+      }
     }
   });
 
