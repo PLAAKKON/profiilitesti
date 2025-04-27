@@ -155,7 +155,13 @@ const results = {
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
 
    // Tyhjät rivit ja otsikko
-  "25.5": { name: "Ohjaus- ja tukivaihtoehdot", threshold: 0, score: -Infinity },
+  "25.5": { 
+    name: `<div id="25.5" style="margin-top: 30px; display: none;">
+              <h2>Lyhytkoulutukset ja urataidot:</h2>
+            </div>`, 
+    threshold: 0, 
+    score: -Infinity 
+  },
   
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
   "27": { name: "Tietotekniikka- ja digiosaamisen kehittäminen", threshold: 17, score: 0 },
