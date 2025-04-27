@@ -258,7 +258,6 @@ function showQuestion() {
 function handleAnswer(qid, option) {
   answers[qid] = option;
 
-  // Päivitetty pisteytyslogiikka
   const question = questions.find(q => q.id === qid);
   if (question && question.options[option]) {
     const points = question.options[option].points || {};
