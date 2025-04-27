@@ -224,22 +224,48 @@ const narratives = {
 };
 
 let currentQuestionIndex = 0;
-const answers = {};
+let answers = {};
 
-document.getElementById("toggleButton").addEventListener("click", () => {
-  const toggleButton = document.getElementById("toggleButton");
-  toggleButton.style.display = "none"; // Piilotetaan nappi
+function showQuestion() {
+  const questionContainer = document.getElementById("questionContainer");
+  const questionText = document.getElementById("questionText");
+  const optionsContainer = document.getElementById("optionsContainer");
 
-  if (currentQuestionIndex === 0) {
-    currentQuestionIndex = 0;
-    Object.keys(answers).forEach(key => delete answers[key]);
-    document.getElementById("questionContainer").style.display = "block";
-    document.getElementById("resultsContainer").style.display = "none";
+  // Tyhjennetään edelliset vaihtoehdot
+  optionsContainer.innerHTML = "";
+
+  // Haetaan nykyinen kysymys
+  const currentQuestion = questions[currentQuestionIndex];
+  questionText.textContent = currentQuestion.text;
+
+  // Luodaan vaihtoehdot
+  Object.entries(currentQuestion.options).forEach(([key, option]) => {
+    const button = document.createElement("button");
+    button.textContent = option.label;
+    button.onclick = () => handleAnswer(key);
+    optionsContainer.appendChild(button);
+  });
+}
+
+function handleAnswer(selectedOption) {
+  // Tallennetaan vastaus
+  const currentQuestion = questions[currentQuestionIndex];
+  answers[currentQuestion.id] = selectedOption;
+
+  // Päivitetään pisteet
+  const selectedPoints = currentQuestion.options[selectedOption].points;
+  Object.entries(selectedPoints).forEach(([id, points]) => {
+    results[id].score += points;
+  });
+
+  // Siirrytään seuraavaan kysymykseen tai näytetään tulokset
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
     showQuestion();
   } else {
     showResults();
   }
-});
+}
 
 function showResults() {
   document.getElementById("questionContainer").style.display = "none";
@@ -248,24 +274,6 @@ function showResults() {
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
   resultsList.innerHTML = "";
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
-
-   // Suodata ammatit koulutustason perusteella
-	if (answers["Q7"] === "c") { // Korkeakoulutus
-	const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-	lowEducationJobs.forEach(jobId => {
-		if (results[jobId]) {
-		results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
-		}
-	});
-	} else if (answers["Q7"] === "a" || answers["Q7"] === "b") { // Matalasti koulutettu
-	const highEducationJobs = [12, 13, 14, 15, 17, 19, 21, 22, 23];
-	highEducationJobs.forEach(jobId => {
-		if (results[jobId]) {
-		results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
-		}
-	});
-	}
-
 
   // Lisää otsikko ammateille
   const jobsHeading = document.createElement("h3");
@@ -325,3 +333,14 @@ function showResults() {
 
   document.getElementById("resultsContainer").style.display = "block";
 }
+
+// Käynnistysnappi
+const toggleButton = document.getElementById("toggleButton");
+toggleButton.onclick = () => {
+  toggleButton.style.display = "none"; // Piilotetaan nappi
+  currentQuestionIndex = 0;
+  Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennetään vastaukset
+  document.getElementById("questionContainer").style.display = "block";
+  document.getElementById("resultsContainer").style.display = "none";
+  showQuestion();
+};
