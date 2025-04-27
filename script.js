@@ -243,51 +243,56 @@ document.getElementById("toggleButton").addEventListener("click", () => {
   }
 });
 
-function showQuestion() {
-  const question = questions[currentQuestionIndex];
-  const container = document.getElementById("questionContainer");
-  container.innerHTML = `<h3>${question.text}</h3>`;
-  Object.entries(question.options).forEach(([key, option]) => {
-    const btn = document.createElement("button");
-    btn.textContent = option.label; // Korjattu: Näytetään label-arvo
-    btn.onclick = () => handleAnswer(question.id, key);
-    container.appendChild(btn);
-    container.appendChild(document.createElement("br"));
-  });
-}
+function showResults() {
+  document.getElementById("questionContainer").style.display = "none";
+  const resultsList = document.getElementById("resultsList");
+  const writtenSummary = document.getElementById("writtenSummary");
+  const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
+  resultsList.innerHTML = ""; // Tyhjennetään tuloslista
+  writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus
 
-function handleAnswer(qid, option) {
-  answers[qid] = option;
+  let supportHeaderAdded = false;
 
-  // Päivitetty pisteytyslogiikka
-  const question = questions.find(q => q.id === qid);
-  if (question && question.options[option]) {
-    const points = question.options[option].points || {};
-    Object.entries(points).forEach(([resultId, score]) => {
-      if (results[resultId]) {
-        results[resultId].score += score;
+  // Suodata ja näytä tulokset, jotka ylittävät kynnyksen
+  Object.entries(results).forEach(([id, prof]) => {
+    if (prof.score >= prof.threshold) {
+      const numericId = Number(id);
+
+      // Lisää väliotsikko ennen ensimmäistä tukivaihtoehtoa
+      if (numericId === 26 && !supportHeaderAdded) {
+        const spacer = document.createElement("br");
+        resultsList.appendChild(spacer);
+
+        const supportHeader = document.createElement("h3");
+        supportHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
+        resultsList.appendChild(supportHeader);
+
+        supportHeaderAdded = true;
       }
-    });
-  }
 
-  // Yhdistelmäehtojen käsittely
-  comboRules.forEach(rule => {
-    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
-      Object.entries(rule.add).forEach(([resultId, score]) => {
-        if (results[resultId]) {
-          results[resultId].score += score;
-        }
-      });
+      const li = document.createElement("li");
+      li.textContent = prof.name;
+      resultsList.appendChild(li);
     }
   });
 
-  // Debug: Tulosta päivitetyt pisteet
-  console.log("Päivitetyt pisteet:", results);
+  // Näytä narratiivit vastausten perusteella
+  let hasNarratives = false;
+  Object.entries(answers).forEach(([qid, opt]) => {
+    const narrative = narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla.";
+    const paragraph = document.createElement("p");
+    paragraph.innerHTML = "• " + narrative;
+    writtenSummary.appendChild(paragraph);
+    hasNarratives = true;
+  });
 
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    showQuestion();
+  // Näytä kirjallinen arvio, jos narratiiveja on
+  if (hasNarratives) {
+    writtenSummaryContainer.style.display = "block";
   } else {
-    showResults();
+    writtenSummaryContainer.style.display = "none";
   }
+
+  // Näytä tuloskontaineri
+  document.getElementById("resultsContainer").style.display = "block";
 }
