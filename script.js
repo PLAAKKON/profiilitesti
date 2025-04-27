@@ -131,7 +131,7 @@ const results = {
   "1": { name: "Fyysinen varasto- ja logistiikka-aputyö ISCO 93, TK10 933", threshold: 14, score: 0 },
   "2": { name: "Pakkaus- ja tuotannon apu- ja kokoonpanotyö ISCO 93, TK10 932", threshold: 14, score: 0 },
   "3": { name: "Rakennustyön ja kiinteistöhuollon avustava työ ISCO 71, TK10 711, TK10 712", threshold: 14, score: 0 },
-  "4": { name: "Luonnnovara- ja ympäristöalan perustyö (avustavat puisto- ja maataloustyöt) ISCO 61, TK10 611", threshold: 14, score: 0 },
+  "4": { name: "Luonnovara- ja ympäristöalan perustyö (avustavat puisto- ja maataloustyöt) ISCO 61, TK10 611", threshold: 14, score: 0 },
   "5": { name: "Posti-, lähetti- ja jakelutyö ISCO 43, TK10 441", threshold: 14, score: 0 },
   "6": { name: "Puhdistus- ja siivoustyö, ISCO 91, TK10 911", threshold: 14, score: 0 },
   "7": { name: "Kunnossapito- ja korjaustyön tukityö, ISCO 72, TK10 723", threshold: 14, score: 0 },
@@ -150,7 +150,7 @@ const results = {
   "20": { name: "Tekninen huolto ja järjestelmän kunnossapito, ISCO 72, TK10 741", threshold: 17, score: 0 },
   "21": { name: "Tuotanto- ja kehitysinsinööri, ISCO 21, TK10 214", threshold: 17, score: 0 },
   "22": { name: "Logistiikan ja projektien hallinta, ISCO 21, TK10 132-242", threshold: 17, score: 0 },
-  "23": { name: "Matkailu- IT-tuki ja systeemityö, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
+  "23": { name: "IT-tuki ja ohjelmistopalvelut, ISCO 25, TK10 251, TK10 252", threshold: 17, score: 0 },
   "24": { name: "Luova kirjoittaminen ja visuaalinen viestintä, ISCO 26, TK10 265", threshold: 17, score: 0 },
   "25": { name: "Yrittäjyys ja asiantuntijakonsultointi, ISCO 12, TK10 241", threshold: 17, score: 0 },
   "26": { name: "Lyhytkoulutukset ja urataidot", threshold: 16, score: 0 },
@@ -298,15 +298,29 @@ function showResults() {
   resultsList.innerHTML = "";
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
 
-  // Suodata matalan koulutuksen ammatit, jos vastaaja on korkeakoulutettu
-  if (answers["Q7"] === "c") { // Korkeakoulutus
-    const lowEducationJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-    lowEducationJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity; // Aseta pisteet niin alhaisiksi, että ne eivät ylitä kynnystä
-      }
-    });
-  }
+  // Käsitellään kysymyksen 7 vastaukset ja karsitaan ammatteja
+if (answers["Q7"] === "a") { // Ei muodollista koulutusta
+  const excludedJobs = [15, 21, 22];
+  excludedJobs.forEach(jobId => {
+    if (results[jobId]) {
+      results[jobId].score = -Infinity;
+    }
+  });
+} else if (answers["Q7"] === "b") { // Keskiasteen koulutus
+  const excludedJobs = [21, 22];
+  excludedJobs.forEach(jobId => {
+    if (results[jobId]) {
+      results[jobId].score = -Infinity;
+    }
+  });
+} else if (answers["Q7"] === "c") { // Korkeakoulutus
+  const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11];
+  excludedJobs.forEach(jobId => {
+    if (results[jobId]) {
+      results[jobId].score = -Infinity;
+    }
+  });
+}
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];

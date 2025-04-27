@@ -1,29 +1,56 @@
 PROFIILITESTI – KÄYTTÖOIKEUS JA LISENSSI
-
 © 2025 Yoro Oy. Kaikki oikeudet pidätetään.
 
-Tämä ohjelma on julkaistu vain arviointia ja testikäyttöä varten. Tämän ohjelmiston 
-ja sen osien käyttö kaupalliseen tarkoitukseen on ehdottomasti kielletty ilman 
-erillistä, kirjallista lupaa oikeudenhaltijalta.
+Tämä ohjelmisto on julkaistu opinto-ohjauksen ja urasuunnittelun tueksi.
+Ohjelmiston käyttö kaupallisiin tarkoituksiin on sallittu vain maksullisella koulukohtaisella lisenssillä.
 
 Sallittu käyttö:
-✔ Testaus ja arviointi yksityishenkilöille tai organisaatioille
-✔ Enintään 5 (viisi) yksittäistä ammatillista analyysiä testausympäristössä
-✔ Ei rekisteröitymistä, ei datan keruuta
+✔ Käyttö yläkoulujen, lukioiden ja ammattiopistojen opinto-ohjauksessa
+✔ Käyttö oppilaiden ohjaukseen ilman rekisteröitymistä tai tietojen tallennusta
+✔ Enintään yksi (1) kouluyksikkö per lisenssi
 
 Kielletty:
 ✘ Ohjelmiston muokkaaminen tai jälleenmyynti
-✘ Kaupallinen käyttö tai osittainenkin hyödyntäminen tuotteena/palveluna
-✘ Osien sisällyttäminen muihin järjestelmiin ilman lupaa
-✘ Tietojen tai logiikan kopiointi tai julkaisu muualla
+✘ Ohjelmiston kaupallinen hyödyntäminen ilman lisenssiä
+✘ Ohjelmiston osien sisällyttäminen muihin järjestelmiin ilman kirjallista lupaa
+✘ Ohjelmiston tietojen, logiikan tai sisällön kopiointi tai julkaiseminen muualla
 
-Tämä ohjelmisto ja sen pisteytyslogiikka on kehitetty osana suljettua, 
-lisensoitavaa tuotetta. Mikäli olet kiinnostunut yhteistyöstä tai haluat 
-käyttöoikeuden koko järjestelmään, ota yhteyttä:
+Kaupallinen lisenssimaksu:
+290 € + alv / vuosi / kouluyksikkö
 
+Tämän lisenssin rikkominen johtaa oikeustoimiin.
+Kaikki oikeudet pidätetään Suomen tekijänoikeuslain sekä kansainvälisten tekijänoikeussopimusten mukaisesti.
+
+🔥 Laajennettu työnvälityspalvelupaketti (tulossa)
+Tuleva palveluratkaisumme hyödyntää LxP-profiilianalyysiä ja työympäristötoiveita työnvälityksen ja urasuunnittelun tukena.
+
+Palvelu sisältää:
+✔ Yksilölliset työllistymissuunnitelmat
+
+LxP-analyysin perusteella muodostettu profiili: työympäristötoiveet, vahvuudet, kehityskohteet
+
+Ammatti- ja koulutussuositukset yksilöllisen profiilin mukaan
+
+✔ Ylikoulutus- ja työttömyystiedot
+
+Tunnistaa tilanteet, joissa hakijan koulutus ei vastaa työmarkkinoiden tarpeita
+
+Suosittelee realistisia polkuja uudelleenohjaukseen
+
+✔ Alueelliset työmarkkina-analyysit
+
+Aluekohtainen tieto työvoiman kysynnästä ja tarjonnasta
+
+Mahdollisuus kohdentaa ohjausta paikallisen työmarkkinatilanteen mukaan
+
+✔ Raportit ja analytiikkatyökalut
+
+Henkilökohtaiset profiiliraportit työnhakijoille ja ohjaajille
+
+Yhteenvetoraportit TE-toimistoille ja päätöksenteon tueksi
+
+Seuranta- ja kehitystyökalut työllistymisprosessin tukemiseen
+
+Ota yhteyttä:
 📧 myynti@yoro.fi
 🌐 www.yoro.fi
-
----
-
-Tämän lisenssin rikkominen johtaa oikeustoimiin, ja oikeudet pidätetään Suomen tekijänoikeuslain mukaisesti.
