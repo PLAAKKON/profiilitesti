@@ -318,6 +318,10 @@ function showResults() {
       const li = document.createElement("li");
       li.textContent = prof.name;
       resultsList.appendChild(li);
+    } else if (id === "25.5") { // Erityinen käsittely otsikolle
+      const header = document.createElement("h3");
+      header.textContent = prof.name;
+      resultsList.appendChild(header);
     }
   });
 
@@ -341,18 +345,18 @@ function showResults() {
   if (existingRestartButton) {
     existingRestartButton.remove();
   }
-  
-    // Lisää "Palaa alkuun" -nappi
-    const restartButton = document.createElement("button");
-    restartButton.textContent = "Palaa alkuun";
-    restartButton.style.marginTop = "20px";
-    restartButton.onclick = () => {
-      document.getElementById("resultsContainer").style.display = "none";
-      document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
-      currentQuestionIndex = 0;
-      Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
-    };
-    document.getElementById("resultsContainer").appendChild(restartButton);
-  
-    document.getElementById("resultsContainer").style.display = "block";
-  }  
+
+  // Lisää "Palaa alkuun" -nappi
+  const restartButton = document.createElement("button");
+  restartButton.textContent = "Palaa alkuun";
+  restartButton.style.marginTop = "20px";
+  restartButton.onclick = () => {
+    document.getElementById("resultsContainer").style.display = "none";
+    document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
+    currentQuestionIndex = 0;
+    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+  };
+  document.getElementById("resultsContainer").appendChild(restartButton);
+
+  document.getElementById("resultsContainer").style.display = "block";
+}
