@@ -299,13 +299,13 @@ function showResults() {
   writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
   
  // Käsitellään kysymyksen 2 ja 3 vastaukset ja karsitaan ammatteja 
- if (answers["Q2"] === "c" && answers["Q3"] === "c") {
+ if (answers["Q2"] === "c" && answers["Q3"] === "a") {
   const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
   excludedJobs.forEach(jobId => {
     if (results[jobId]) {
       results[jobId].score = -Infinity;
     }
-  }); 
+  });
 }
 
   // Käsitellään kysymyksen 7 vastaukset ja karsitaan ammatteja
