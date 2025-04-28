@@ -305,7 +305,7 @@ function showResults() {
     if (results[jobId]) {
       results[jobId].score = -Infinity;
     }
-  });
+  }); 
 }
 
   // Käsitellään kysymyksen 7 vastaukset ja karsitaan ammatteja
