@@ -308,6 +308,16 @@ function showResults() {
   });
 }
 
+// Jos henkilö suosii fyysistä työtä ja käytännön tekemistä, poistetaan tietyt ammatit
+if ((answers["Q2"] === "a" || answers["Q2"] === "b") && answers["Q5"] === "c") {
+  const excludedJobs = [12, 13, 14, 17, 18, 19, 24, 25]; // Poistettavat ammatit
+  excludedJobs.forEach(jobId => {
+    if (results[jobId]) {
+      results[jobId].score = -Infinity;
+    }
+  });
+}
+
   // Käsitellään kysymyksen 7 vastaukset ja karsitaan ammatteja
 if (answers["Q7"] === "a") { // Ei muodollista koulutusta
   const excludedJobs = [15, 21, 22];
