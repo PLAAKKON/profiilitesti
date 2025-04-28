@@ -305,12 +305,22 @@ function showResults() {
     if (results[jobId]) {
       results[jobId].score = -Infinity;
     }
-  });
+  }); 
 }
 
 // Jos henkilö suosii fyysistä työtä ja käytännön tekemistä, poistetaan tietyt ammatit
-if ((answers["Q2"] === "a" || answers["Q2"] === "b") && answers["Q5"] === "c") {
+if (answers["Q2"] === "a" && answers["Q5"] === "c") {
   const excludedJobs = [12, 13, 14, 17, 18, 19, 24, 25]; // Poistettavat ammatit
+  excludedJobs.forEach(jobId => {
+    if (results[jobId]) {
+      results[jobId].score = -Infinity;
+    }
+  });
+}
+
+// Jos henkilö haluaa tehdä sosiaalista työtä
+if (answers["Q3"] === "d") {
+  const excludedJobs = [1, 2, 3, 4, 5, 6, 14, 20];
   excludedJobs.forEach(jobId => {
     if (results[jobId]) {
       results[jobId].score = -Infinity;
