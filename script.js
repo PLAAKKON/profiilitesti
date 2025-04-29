@@ -269,6 +269,21 @@ function handleAnswer(qid, option) {
   }
 
   // Karsintakoodit
+  applyExclusions();
+
+  // Yhdistelmäehtojen käsittely
+  applyComboRules();
+
+  // Päivitä currentQuestionIndex ja siirry seuraavaan kysymykseen
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
+    showQuestion(); // Näytä seuraava kysymys
+  } else {
+    showResults(); // Näytä tulokset, kun kaikki kysymykset on vastattu
+  }
+}
+
+function applyExclusions() {
   if (answers["Q2"] === "c" && answers["Q3"] === "a") {
     const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
     excludedJobs.forEach(jobId => {
@@ -318,8 +333,9 @@ function handleAnswer(qid, option) {
       }
     });
   }
+}
 
-  // Yhdistelmäehtojen käsittely (siirretty tänne)
+function applyComboRules() {
   comboRules.forEach(rule => {
     if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
       Object.entries(rule.add).forEach(([resultId, score]) => {
@@ -329,9 +345,12 @@ function handleAnswer(qid, option) {
       });
     }
   });
+}
 
-  // Debug: Tulosta päivitetyt pisteet
-  console.log("Päivitetyt pisteet karsintojen ja yhdistelmäehtojen jälkeen:", results);
+function showResults() {
+  const resultsList = document.createElement("ul");
+  const writtenSummary = document.getElementById("writtenSummary");
+  const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];
@@ -373,6 +392,9 @@ function handleAnswer(qid, option) {
     });
   }
 
+  // Lisää tuloslista DOM:iin
+  document.getElementById("resultsContainer").appendChild(resultsList);
+
   // Näytä sanallinen arvio
   let hasNarratives = false;
   Object.entries(answers).forEach(([qid, opt]) => {
@@ -396,6 +418,8 @@ function handleAnswer(qid, option) {
     document.getElementById("toggleButton").style.display = "block";
     currentQuestionIndex = 0;
     Object.keys(answers).forEach(key => delete answers[key]);
+    Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
+    writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
   };
   document.getElementById("resultsContainer").appendChild(restartButton);
 
