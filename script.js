@@ -348,9 +348,15 @@ function applyComboRules() {
 }
 
 function showResults() {
-  const resultsList = document.createElement("ul");
+  const resultsContainer = document.getElementById("resultsContainer");
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
+
+  // Tyhjennä vanhat tulokset ja sanallinen arvio
+  resultsContainer.innerHTML = ""; // Tyhjennä tuloslista
+  writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
+
+  const resultsList = document.createElement("ul");
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];
@@ -393,7 +399,7 @@ function showResults() {
   }
 
   // Lisää tuloslista DOM:iin
-  document.getElementById("resultsContainer").appendChild(resultsList);
+  resultsContainer.appendChild(resultsList);
 
   // Näytä sanallinen arvio
   let hasNarratives = false;
@@ -414,14 +420,14 @@ function showResults() {
   restartButton.textContent = "Palaa alkuun";
   restartButton.style.marginTop = "20px";
   restartButton.onclick = () => {
-    document.getElementById("resultsContainer").style.display = "none";
+    resultsContainer.style.display = "none";
     document.getElementById("toggleButton").style.display = "block";
     currentQuestionIndex = 0;
     Object.keys(answers).forEach(key => delete answers[key]);
     Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
     writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
   };
-  document.getElementById("resultsContainer").appendChild(restartButton);
+  resultsContainer.appendChild(restartButton);
 
-  document.getElementById("resultsContainer").style.display = "block";
+  resultsContainer.style.display = "block";
 }
