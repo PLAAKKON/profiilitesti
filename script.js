@@ -268,7 +268,58 @@ function handleAnswer(qid, option) {
     });
   }
 
-  // Yhdistelmäehtojen käsittely
+  // Karsintakoodit
+  if (answers["Q2"] === "c" && answers["Q3"] === "a") {
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  }
+
+  if (answers["Q2"] === "a" && answers["Q5"] === "c") {
+    const excludedJobs = [12, 13, 14, 17, 18, 19, 24, 25];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  }
+
+  if (answers["Q3"] === "d") {
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 14, 20];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  }
+
+  if (answers["Q7"] === "a") {
+    const excludedJobs = [15, 21, 22];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  } else if (answers["Q7"] === "b") {
+    const excludedJobs = [21, 22];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  } else if (answers["Q7"] === "c") {
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  }
+
+  // Yhdistelmäehtojen käsittely (siirretty tänne)
   comboRules.forEach(rule => {
     if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
       Object.entries(rule.add).forEach(([resultId, score]) => {
@@ -280,77 +331,7 @@ function handleAnswer(qid, option) {
   });
 
   // Debug: Tulosta päivitetyt pisteet
-  console.log("Päivitetyt pisteet:", results);
-
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    showQuestion();
-  } else {
-    showResults();
-  }
-}
-
-function showResults() {
-  document.getElementById("questionContainer").style.display = "none";
-  const resultsList = document.getElementById("resultsList");
-  const writtenSummary = document.getElementById("writtenSummary");
-  const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
-  resultsList.innerHTML = "";
-  writtenSummary.innerHTML = ""; // Tyhjennetään kirjallinen kuvaus ennen päivitystä
-  
- // Käsitellään kysymyksen 2 ja 3 vastaukset ja karsitaan ammatteja 
- if (answers["Q2"] === "c" && answers["Q3"] === "a") {
-  const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
-  excludedJobs.forEach(jobId => {
-    if (results[jobId]) {
-      results[jobId].score = -Infinity;
-    }
-  }); 
-}
-
-// Jos henkilö suosii fyysistä työtä ja käytännön tekemistä, poistetaan tietyt ammatit
-if (answers["Q2"] === "a" && answers["Q5"] === "c") {
-  const excludedJobs = [12, 13, 14, 17, 18, 19, 24, 25]; // Poistettavat ammatit
-  excludedJobs.forEach(jobId => {
-    if (results[jobId]) {
-      results[jobId].score = -Infinity;
-    }
-  });
-}
-
-// Jos henkilö haluaa tehdä sosiaalista työtä
-if (answers["Q3"] === "d") {
-  const excludedJobs = [1, 2, 3, 4, 5, 6, 14, 20];
-  excludedJobs.forEach(jobId => {
-    if (results[jobId]) {
-      results[jobId].score = -Infinity;
-    }
-  });
-}
-
-  // Käsitellään kysymyksen 7 vastaukset ja karsitaan ammatteja
-if (answers["Q7"] === "a") { // Ei muodollista koulutusta
-  const excludedJobs = [15, 21, 22];
-  excludedJobs.forEach(jobId => {
-    if (results[jobId]) {
-      results[jobId].score = -Infinity;
-    }
-  });
-} else if (answers["Q7"] === "b") { // Keskiasteen koulutus
-  const excludedJobs = [21, 22];
-  excludedJobs.forEach(jobId => {
-    if (results[jobId]) {
-      results[jobId].score = -Infinity;
-    }
-  });
-} else if (answers["Q7"] === "c") { // Korkeakoulutus
-  const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11];
-  excludedJobs.forEach(jobId => {
-    if (results[jobId]) {
-      results[jobId].score = -Infinity;
-    }
-  });
-}
+  console.log("Päivitetyt pisteet karsintojen ja yhdistelmäehtojen jälkeen:", results);
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];
@@ -358,7 +339,7 @@ if (answers["Q7"] === "a") { // Ei muodollista koulutusta
 
   Object.entries(results).forEach(([id, prof]) => {
     if (prof.score >= prof.threshold) {
-      if (parseInt(id) <= 25) { // Käytä parseInt varmistaaksesi oikean vertailun
+      if (parseInt(id) <= 25) {
         ammatit.push(prof.name);
       } else {
         ohjausJaTuki.push(prof.name);
@@ -392,24 +373,18 @@ if (answers["Q7"] === "a") { // Ei muodollista koulutusta
     });
   }
 
-  // Näytä sanallinen arvio, jos narratiiveja on
-  let hasNarratives = false; // Oletusarvoisesti ei ole narratiiveja
+  // Näytä sanallinen arvio
+  let hasNarratives = false;
   Object.entries(answers).forEach(([qid, opt]) => {
     const narrative = narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla.";
     const paragraph = document.createElement("p");
     paragraph.innerHTML = "• " + narrative;
     writtenSummary.appendChild(paragraph);
-    hasNarratives = true; // Jos narratiivi löytyy, asetetaan true
+    hasNarratives = true;
   });
 
   if (hasNarratives) {
     writtenSummaryContainer.style.display = "block";
-  }
-
-  // Poista aiempi "Palaa alkuun" -nappi, jos sellainen on
-  const existingRestartButton = document.getElementById("restartButton");
-  if (existingRestartButton) {
-    existingRestartButton.remove();
   }
 
   // Lisää "Palaa alkuun" -nappi
@@ -418,9 +393,9 @@ if (answers["Q7"] === "a") { // Ei muodollista koulutusta
   restartButton.style.marginTop = "20px";
   restartButton.onclick = () => {
     document.getElementById("resultsContainer").style.display = "none";
-    document.getElementById("toggleButton").style.display = "block"; // Näytä alkuperäinen nappi
+    document.getElementById("toggleButton").style.display = "block";
     currentQuestionIndex = 0;
-    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+    Object.keys(answers).forEach(key => delete answers[key]);
   };
   document.getElementById("resultsContainer").appendChild(restartButton);
 
