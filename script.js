@@ -348,20 +348,27 @@ function applyComboRules() {
 }
 
 function showResults() {
-  document.getElementById("resultsContainer").innerHTML = ""; // <<< tyhjennä vanhat tulokset
-  document.getElementById("questionContainer").style.display = "none"; // <<< piilota kysymysosio
-  
-  const resultsList = document.createElement("ul");
+  console.log("showResults-funktio kutsuttu");
+
+  const resultsContainer = document.getElementById("resultsContainer");
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
+  const questionContainer = document.getElementById("questionContainer");
 
-  writtenSummary.innerHTML = ""; // <<< Tämä rivi lisätään TÄHÄN
+  // Piilota kysymysosio ja tyhjennä DOM-elementit
+  questionContainer.style.display = "none";
+  questionContainer.innerHTML = ""; // Tyhjennä kysymysosio
+  resultsContainer.innerHTML = ""; // Tyhjennä tuloslista
+  writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
+
+  const resultsList = document.createElement("ul");
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];
   const ohjausJaTuki = [];
 
   Object.entries(results).forEach(([id, prof]) => {
+    console.log(`Tulos: ${prof.name}, Pisteet: ${prof.score}, Kynnys: ${prof.threshold}`);
     if (prof.score >= prof.threshold) {
       if (parseInt(id) <= 25) {
         ammatit.push(prof.name);
@@ -398,11 +405,12 @@ function showResults() {
   }
 
   // Lisää tuloslista DOM:iin
-  document.getElementById("resultsContainer").appendChild(resultsList);
+  resultsContainer.appendChild(resultsList);
 
   // Näytä sanallinen arvio
   let hasNarratives = false;
   Object.entries(answers).forEach(([qid, opt]) => {
+    console.log(`Sanallinen arvio kysymykselle ${qid}, vastaus: ${opt}`);
     const narrative = narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla.";
     const paragraph = document.createElement("p");
     paragraph.innerHTML = "• " + narrative;
@@ -411,7 +419,9 @@ function showResults() {
   });
 
   if (hasNarratives) {
-    writtenSummaryContainer.style.display = "block";
+    writtenSummaryContainer.style.display = "block"; // Näytä sanallinen arvio
+  } else {
+    writtenSummaryContainer.style.display = "none"; // Piilota, jos ei ole arvioita
   }
 
   // Lisää "Palaa alkuun" -nappi
@@ -419,14 +429,15 @@ function showResults() {
   restartButton.textContent = "Palaa alkuun";
   restartButton.style.marginTop = "20px";
   restartButton.onclick = () => {
-    document.getElementById("resultsContainer").style.display = "none";
-    document.getElementById("toggleButton").style.display = "block";
-    currentQuestionIndex = 0;
-    Object.keys(answers).forEach(key => delete answers[key]);
+    resultsContainer.style.display = "none"; // Piilota tulososio
+    document.getElementById("toggleButton").style.display = "block"; // Näytä "Aloita testi" -nappi
+    currentQuestionIndex = 0; // Nollaa kysymysindeksi
+    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
     Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
     writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
+    writtenSummaryContainer.style.display = "none"; // Piilota sanallinen arvio
   };
-  document.getElementById("resultsContainer").appendChild(restartButton);
+  resultsContainer.appendChild(restartButton);
 
-  document.getElementById("resultsContainer").style.display = "block";
+  resultsContainer.style.display = "block";
 }
