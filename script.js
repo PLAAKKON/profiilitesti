@@ -355,6 +355,8 @@ function showResults() {
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
 
+  writtenSummary.innerHTML = ""; // <<< Tämä rivi lisätään TÄHÄN
+
   // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];
   const ohjausJaTuki = [];
