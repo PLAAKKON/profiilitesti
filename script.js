@@ -348,6 +348,9 @@ function applyComboRules() {
 }
 
 function showResults() {
+  document.getElementById("resultsContainer").innerHTML = ""; // <<< tyhjennä vanhat tulokset
+  document.getElementById("questionContainer").style.display = "none"; // <<< piilota kysymysosio
+  
   const resultsList = document.createElement("ul");
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
