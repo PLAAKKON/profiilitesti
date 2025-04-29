@@ -353,6 +353,9 @@ function showResults() {
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
   const questionContainer = document.getElementById("questionContainer");
 
+  // Näytä kysymysosio (varmistetaan, ettei se jää piilotetuksi)
+  questionContainer.style.display = "block";
+
   // Tyhjennä kysymysosio, vanhat tulokset ja sanallinen arvio
   questionContainer.innerHTML = ""; // Tyhjennä kysymysosio
   resultsContainer.innerHTML = ""; // Tyhjennä tuloslista
@@ -417,20 +420,19 @@ function showResults() {
     writtenSummaryContainer.style.display = "block";
   }
 
-// Lisää "Palaa alkuun" -nappi
-const restartButton = document.createElement("button");
-restartButton.textContent = "Palaa alkuun";
-restartButton.style.marginTop = "20px";
-restartButton.onclick = () => {
-  resultsContainer.style.display = "none"; // Piilota tulososio
-  document.getElementById("questionContainer").style.display = "none"; // Piilota kysymysosio
-  document.getElementById("toggleButton").style.display = "block"; // Näytä "Aloita testi" -nappi
-  currentQuestionIndex = 0; // Nollaa kysymysindeksi
-  Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
-  Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
-  writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
-};
-resultsContainer.appendChild(restartButton);
+  // Lisää "Palaa alkuun" -nappi
+  const restartButton = document.createElement("button");
+  restartButton.textContent = "Palaa alkuun";
+  restartButton.style.marginTop = "20px";
+  restartButton.onclick = () => {
+    resultsContainer.style.display = "none"; // Piilota tulososio
+    document.getElementById("toggleButton").style.display = "block"; // Näytä "Aloita testi" -nappi
+    currentQuestionIndex = 0; // Nollaa kysymysindeksi
+    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+    Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
+    writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
+  };
+  resultsContainer.appendChild(restartButton);
 
-resultsContainer.style.display = "block";
+  resultsContainer.style.display = "block";
 }
