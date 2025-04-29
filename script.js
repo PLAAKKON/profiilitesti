@@ -354,7 +354,7 @@ function showResults() {
   const questionContainer = document.getElementById("questionContainer");
 
   // Näytä kysymysosio (varmistetaan, ettei se jää piilotetuksi)
-  questionContainer.style.display = "block";
+  questionContainer.style.display = "none";
 
   // Tyhjennä kysymysosio, vanhat tulokset ja sanallinen arvio
   questionContainer.innerHTML = ""; // Tyhjennä kysymysosio
@@ -417,7 +417,9 @@ function showResults() {
   });
 
   if (hasNarratives) {
-    writtenSummaryContainer.style.display = "block";
+    writtenSummaryContainer.style.display = "block"; // Näytä sanallinen arvio
+  } else {
+    writtenSummaryContainer.style.display = "none"; // Piilota, jos ei ole arvioita
   }
 
   // Lisää "Palaa alkuun" -nappi
@@ -431,6 +433,7 @@ function showResults() {
     Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
     Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
     writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
+    writtenSummaryContainer.style.display = "none"; // Piilota sanallinen arvio
   };
   resultsContainer.appendChild(restartButton);
 
