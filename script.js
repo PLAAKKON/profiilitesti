@@ -348,20 +348,9 @@ function applyComboRules() {
 }
 
 function showResults() {
-  const resultsContainer = document.getElementById("resultsContainer");
+  const resultsList = document.createElement("ul");
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
-  const questionContainer = document.getElementById("questionContainer");
-
-  // Näytä kysymysosio (varmistetaan, ettei se jää piilotetuksi)
-  questionContainer.style.display = "none";
-
-  // Tyhjennä kysymysosio, vanhat tulokset ja sanallinen arvio
-  questionContainer.innerHTML = ""; // Tyhjennä kysymysosio
-  resultsContainer.innerHTML = ""; // Tyhjennä tuloslista
-  writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
-
-  const resultsList = document.createElement("ul");
 
   // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];
@@ -404,7 +393,7 @@ function showResults() {
   }
 
   // Lisää tuloslista DOM:iin
-  resultsContainer.appendChild(resultsList);
+  document.getElementById("resultsContainer").appendChild(resultsList);
 
   // Näytä sanallinen arvio
   let hasNarratives = false;
@@ -417,9 +406,7 @@ function showResults() {
   });
 
   if (hasNarratives) {
-    writtenSummaryContainer.style.display = "block"; // Näytä sanallinen arvio
-  } else {
-    writtenSummaryContainer.style.display = "none"; // Piilota, jos ei ole arvioita
+    writtenSummaryContainer.style.display = "block";
   }
 
   // Lisää "Palaa alkuun" -nappi
@@ -427,15 +414,14 @@ function showResults() {
   restartButton.textContent = "Palaa alkuun";
   restartButton.style.marginTop = "20px";
   restartButton.onclick = () => {
-    resultsContainer.style.display = "none"; // Piilota tulososio
-    document.getElementById("toggleButton").style.display = "block"; // Näytä "Aloita testi" -nappi
-    currentQuestionIndex = 0; // Nollaa kysymysindeksi
-    Object.keys(answers).forEach(key => delete answers[key]); // Tyhjennä vastaukset
+    document.getElementById("resultsContainer").style.display = "none";
+    document.getElementById("toggleButton").style.display = "block";
+    currentQuestionIndex = 0;
+    Object.keys(answers).forEach(key => delete answers[key]);
     Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
     writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
-    writtenSummaryContainer.style.display = "none"; // Piilota sanallinen arvio
   };
-  resultsContainer.appendChild(restartButton);
+  document.getElementById("resultsContainer").appendChild(restartButton);
 
-  resultsContainer.style.display = "block";
+  document.getElementById("resultsContainer").style.display = "block";
 }
