@@ -242,25 +242,38 @@ document.getElementById("toggleButton").addEventListener("click", () => {
   showQuestion();
 });
 
+let forwardEnabled = false; // Seuraa, onko "Forward"-nappi käytettävissä
+
 function showQuestion() {
   const question = questions[currentQuestionIndex];
   const container = document.getElementById("questionContainer");
   container.innerHTML = `<h3>${question.text}</h3>`;
 
+  // Luo vastauspainikkeet
   Object.entries(question.options).forEach(([key, option]) => {
     const btn = document.createElement("button");
     btn.textContent = option.label;
-    btn.onclick = () => handleAnswer(question.id, key);
+    btn.onclick = () => {
+      handleAnswer(question.id, key);
 
-    // Highlight the previously selected answer
+      // Korosta valittu vastaus
+      const buttons = container.querySelectorAll("button");
+      buttons.forEach(button => (button.style.backgroundColor = ""));
+      btn.style.backgroundColor = "#d3d3d3"; // Korostusväri
+
+      // Päivitä forwardEnabled, jos käyttäjä vastaa kysymykseen
+      forwardEnabled = false;
+    };
+
+    // Korosta jo valittu vastaus
     if (answers[question.id] === key) {
-      btn.style.backgroundColor = "#d3d3d3"; // Highlight color
+      btn.style.backgroundColor = "#d3d3d3"; // Korostusväri
     }
 
     btn.onmouseover = () => (btn.style.backgroundColor = "#d3d3d3");
     btn.onmouseout = () => {
       if (answers[question.id] !== key) {
-        btn.style.backgroundColor = ""; // Reset color if not selected
+        btn.style.backgroundColor = ""; // Palauta väri, jos ei valittu
       }
     };
 
@@ -268,23 +281,27 @@ function showQuestion() {
     container.appendChild(document.createElement("br"));
   });
 
-  // Add navigation buttons
+  // Luo navigointipainikkeet
   const navContainer = document.createElement("div");
   navContainer.style.marginTop = "20px";
 
+  // Luo "Back"-nappi, jos ei olla ensimmäisessä kysymyksessä
   if (currentQuestionIndex > 0) {
     const backButton = document.createElement("button");
     backButton.textContent = "Back";
     backButton.onclick = () => {
       currentQuestionIndex--;
+      forwardEnabled = true; // Aktivoi "Forward"-nappi, kun käyttäjä painaa "Back"
       showQuestion();
     };
     navContainer.appendChild(backButton);
   }
 
+  // Luo "Forward"-nappi, jos ei olla viimeisessä kysymyksessä
   if (currentQuestionIndex < questions.length - 1) {
     const forwardButton = document.createElement("button");
     forwardButton.textContent = "Forward";
+    forwardButton.disabled = !forwardEnabled; // Poista käytöstä, jos forwardEnabled on false
     forwardButton.onclick = () => {
       currentQuestionIndex++;
       showQuestion();
@@ -294,19 +311,6 @@ function showQuestion() {
 
   container.appendChild(navContainer);
 }
-
-function handleAnswer(qid, option) {
-  answers[qid] = option;
-
-  const question = questions.find(q => q.id === qid);
-  if (question && question.options[option]) {
-    const points = question.options[option].points || {};
-    Object.entries(points).forEach(([resultId, score]) => {
-      if (results[resultId]) {
-        results[resultId].score += score;
-      }
-    });
-  }
 
   // Karsintakoodit
   applyExclusions();
