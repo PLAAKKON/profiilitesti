@@ -325,7 +325,6 @@ function showQuestion() {
   } else {
     showResults(); // Näytä tulokset, kun kaikki kysymykset on vastattu
   }
-}
 
 function applyExclusions() {
   if (answers["Q2"] === "c" && answers["Q3"] === "a") {
