@@ -239,52 +239,28 @@ document.getElementById("toggleButton").addEventListener("click", () => {
   document.getElementById("resultsContainer").style.display = "none";
 
   // Näytä ensimmäinen kysymys
-  forwardEnabled = false; // Estetään "Forward"-nappi alussa
   showQuestion();
 });
-
-// Piilotetaan kysymysosio ja tulososio alussa
-document.getElementById("questionContainer").style.display = "none";
-document.getElementById("resultsContainer").style.display = "none";
-
-let forwardEnabled = false; // Seuraa, onko "Forward"-nappi käytettävissä
-
-function handleAnswer(questionId, answerKey) {
-  answers[questionId] = answerKey; // Tallenna vastaus
-  forwardEnabled = true; // Aktivoi "Forward"-nappi
-}
 
 function showQuestion() {
   const question = questions[currentQuestionIndex];
   const container = document.getElementById("questionContainer");
   container.innerHTML = `<h3>${question.text}</h3>`;
 
-  // Luo vastauspainikkeet
   Object.entries(question.options).forEach(([key, option]) => {
     const btn = document.createElement("button");
     btn.textContent = option.label;
-    btn.onclick = () => {
-      handleAnswer(question.id, key);
+    btn.onclick = () => handleAnswer(question.id, key);
 
-      // Korosta valittu vastaus
-      const buttons = container.querySelectorAll("button");
-      buttons.forEach(button => (button.style.backgroundColor = ""));
-      btn.style.backgroundColor = "#d3d3d3"; // Korostusväri
-
-      // Aktivoi "Forward"-nappi
-      forwardEnabled = true;
-      updateNavigationButtons();
-    };
-
-    // Korosta jo valittu vastaus
+    // Highlight the previously selected answer
     if (answers[question.id] === key) {
-      btn.style.backgroundColor = "#d3d3d3"; // Korostusväri
+      btn.style.backgroundColor = "#d3d3d3"; // Highlight color
     }
 
     btn.onmouseover = () => (btn.style.backgroundColor = "#d3d3d3");
     btn.onmouseout = () => {
       if (answers[question.id] !== key) {
-        btn.style.backgroundColor = ""; // Palauta väri, jos ei valittu
+        btn.style.backgroundColor = ""; // Reset color if not selected
       }
     };
 
@@ -292,38 +268,123 @@ function showQuestion() {
     container.appendChild(document.createElement("br"));
   });
 
-  // Päivitä navigointipainikkeet
-  updateNavigationButtons();
-}
+  // Add navigation buttons
+  const navContainer = document.createElement("div");
+  navContainer.style.marginTop = "20px";
 
-function updateNavigationButtons() {
-  const navContainer = document.getElementById("navContainer");
-  navContainer.innerHTML = ""; // Tyhjennä navigointipainikkeet
-
-  // Luo "Back"-nappi, jos ei olla ensimmäisessä kysymyksessä
   if (currentQuestionIndex > 0) {
     const backButton = document.createElement("button");
     backButton.textContent = "Back";
     backButton.onclick = () => {
       currentQuestionIndex--;
-      forwardEnabled = true; // Aktivoi "Forward"-nappi, kun käyttäjä palaa taaksepäin
       showQuestion();
     };
     navContainer.appendChild(backButton);
   }
 
-  // Luo "Forward"-nappi, jos ei olla viimeisessä kysymyksessä
   if (currentQuestionIndex < questions.length - 1) {
     const forwardButton = document.createElement("button");
     forwardButton.textContent = "Forward";
-    forwardButton.disabled = !forwardEnabled; // Poista käytöstä, jos forwardEnabled on false
     forwardButton.onclick = () => {
       currentQuestionIndex++;
-      forwardEnabled = false; // Estä "Forward"-nappi, kunnes vastaus annetaan
       showQuestion();
     };
     navContainer.appendChild(forwardButton);
   }
+
+  container.appendChild(navContainer);
+}
+
+function handleAnswer(qid, option) {
+  answers[qid] = option;
+
+  const question = questions.find(q => q.id === qid);
+  if (question && question.options[option]) {
+    const points = question.options[option].points || {};
+    Object.entries(points).forEach(([resultId, score]) => {
+      if (results[resultId]) {
+        results[resultId].score += score;
+      }
+    });
+  }
+
+  // Karsintakoodit
+  applyExclusions();
+
+  // Yhdistelmäehtojen käsittely
+  applyComboRules();
+
+  // Päivitä currentQuestionIndex ja siirry seuraavaan kysymykseen
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
+    showQuestion(); // Näytä seuraava kysymys
+  } else {
+    showResults(); // Näytä tulokset, kun kaikki kysymykset on vastattu
+  }
+}
+
+function applyExclusions() {
+  if (answers["Q2"] === "c" && answers["Q3"] === "a") {
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  }
+
+  if (answers["Q2"] === "a" && answers["Q5"] === "c") {
+    const excludedJobs = [12, 13, 14, 17, 18, 19, 24, 25];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  }
+
+  if (answers["Q3"] === "d") {
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 14, 20];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  }
+
+  if (answers["Q7"] === "a") {
+    const excludedJobs = [15, 21, 22];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  } else if (answers["Q7"] === "b") {
+    const excludedJobs = [21, 22];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  } else if (answers["Q7"] === "c") {
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
+  }
+}
+
+function applyComboRules() {
+  comboRules.forEach(rule => {
+    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
+      Object.entries(rule.add).forEach(([resultId, score]) => {
+        if (results[resultId]) {
+          results[resultId].score += score;
+        }
+      });
+    }
+  });
 }
 
 function showResults() {
@@ -403,68 +464,4 @@ function showResults() {
   document.getElementById("resultsContainer").appendChild(restartButton);
 
   document.getElementById("resultsContainer").style.display = "block";
-}
-
-function applyExclusions() {
-  if (answers["Q2"] === "c" && answers["Q3"] === "a") {
-    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
-  }
-
-  if (answers["Q2"] === "a" && answers["Q5"] === "c") {
-    const excludedJobs = [12, 13, 14, 17, 18, 19, 24, 25];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
-  }
-
-  if (answers["Q3"] === "d") {
-    const excludedJobs = [1, 2, 3, 4, 5, 6, 14, 20];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
-  }
-
-  if (answers["Q7"] === "a") {
-    const excludedJobs = [15, 21, 22];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
-  } else if (answers["Q7"] === "b") {
-    const excludedJobs = [21, 22];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
-  } else if (answers["Q7"] === "c") {
-    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
-  }
-}
-
-function applyComboRules() {
-  comboRules.forEach(rule => {
-    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
-      Object.entries(rule.add).forEach(([resultId, score]) => {
-        if (results[resultId]) {
-          results[resultId].score += score;
-        }
-      });
-    }
-  });
 }
