@@ -405,14 +405,6 @@ function showResults() {
   document.getElementById("resultsContainer").style.display = "block";
 }
 
-// Päivitä currentQuestionIndex vain kerran
-currentQuestionIndex++;
-if (currentQuestionIndex < questions.length) {
-  showQuestion();
-} else {
-  showResults();
-}
-
 function applyExclusions() {
   if (answers["Q2"] === "c" && answers["Q3"] === "a") {
     const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
