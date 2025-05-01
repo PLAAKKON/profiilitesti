@@ -269,6 +269,10 @@ function showQuestion() {
       const buttons = container.querySelectorAll("button");
       buttons.forEach(button => (button.style.backgroundColor = ""));
       btn.style.backgroundColor = "#d3d3d3"; // Korostusväri
+
+      // Aktivoi "Forward"-nappi
+      forwardEnabled = true;
+      updateNavigationButtons();
     };
 
     // Korosta jo valittu vastaus
@@ -287,9 +291,13 @@ function showQuestion() {
     container.appendChild(document.createElement("br"));
   });
 
-  // Luo navigointipainikkeet
-  const navContainer = document.createElement("div");
-  navContainer.style.marginTop = "20px";
+  // Päivitä navigointipainikkeet
+  updateNavigationButtons();
+}
+
+function updateNavigationButtons() {
+  const navContainer = document.getElementById("navContainer");
+  navContainer.innerHTML = ""; // Tyhjennä navigointipainikkeet
 
   // Luo "Back"-nappi, jos ei olla ensimmäisessä kysymyksessä
   if (currentQuestionIndex > 0) {
@@ -297,6 +305,7 @@ function showQuestion() {
     backButton.textContent = "Back";
     backButton.onclick = () => {
       currentQuestionIndex--;
+      forwardEnabled = true; // Aktivoi "Forward"-nappi, kun käyttäjä palaa taaksepäin
       showQuestion();
     };
     navContainer.appendChild(backButton);
@@ -314,8 +323,6 @@ function showQuestion() {
     };
     navContainer.appendChild(forwardButton);
   }
-
-  container.appendChild(navContainer);
 }
 
   // Karsintakoodit
