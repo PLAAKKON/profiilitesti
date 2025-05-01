@@ -239,6 +239,7 @@ document.getElementById("toggleButton").addEventListener("click", () => {
   document.getElementById("resultsContainer").style.display = "none";
 
   // Näytä ensimmäinen kysymys
+  forwardEnabled = false; // Estetään "Forward"-nappi alussa
   showQuestion();
 });
 
