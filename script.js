@@ -246,13 +246,53 @@ function showQuestion() {
   const question = questions[currentQuestionIndex];
   const container = document.getElementById("questionContainer");
   container.innerHTML = `<h3>${question.text}</h3>`;
+
   Object.entries(question.options).forEach(([key, option]) => {
     const btn = document.createElement("button");
-    btn.textContent = option.label; // Korjattu: Näytetään label-arvo
+    btn.textContent = option.label;
     btn.onclick = () => handleAnswer(question.id, key);
+
+    // Highlight the previously selected answer
+    if (answers[question.id] === key) {
+      btn.style.backgroundColor = "#d3d3d3"; // Highlight color
+    }
+
+    btn.onmouseover = () => (btn.style.backgroundColor = "#d3d3d3");
+    btn.onmouseout = () => {
+      if (answers[question.id] !== key) {
+        btn.style.backgroundColor = ""; // Reset color if not selected
+      }
+    };
+
     container.appendChild(btn);
     container.appendChild(document.createElement("br"));
   });
+
+  // Add navigation buttons
+  const navContainer = document.createElement("div");
+  navContainer.style.marginTop = "20px";
+
+  if (currentQuestionIndex > 0) {
+    const backButton = document.createElement("button");
+    backButton.textContent = "Back";
+    backButton.onclick = () => {
+      currentQuestionIndex--;
+      showQuestion();
+    };
+    navContainer.appendChild(backButton);
+  }
+
+  if (currentQuestionIndex < questions.length - 1) {
+    const forwardButton = document.createElement("button");
+    forwardButton.textContent = "Forward";
+    forwardButton.onclick = () => {
+      currentQuestionIndex++;
+      showQuestion();
+    };
+    navContainer.appendChild(forwardButton);
+  }
+
+  container.appendChild(navContainer);
 }
 
 function handleAnswer(qid, option) {
