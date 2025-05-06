@@ -3,47 +3,145 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LxP Profiilitesti – Yoro Oy</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Yoro Oy</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: "Segoe UI", sans-serif;
+      color: white;
+      background: transparent;
+    }
+
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    
+
+    header {
+      text-align: center;
+      padding: 2rem;
+      background: transparent;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 3rem;
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      color: #ffffff;
+    }
+
+    a.button {
+      display: inline-block;
+      background-color: #007acc;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      background: rgba(0,0,0,0.4);
+    }
+  </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Työ- ja opintopolun profiilitesti</h1>
+  <video autoplay muted loop playsinline class="video-background">
+    <source src="Yoro1_final_1080p_30s.mp4" type="video/mp4" />
+  </video>
+  
 
-	<p>LxP-profiilitesti on Yoro Oy:n kehittämä työkalu, joka tukee yksilöiden urasuunnittelua ja ammatillista suuntautumista. Testi soveltuu sekä opinto-ohjaukseen että työnvälityspalveluihin.</p>
+  <header>
+    <h1>Yoro Oy</h1>
+    <p>IT-konsultointi, IT-palvelut</p>
+  </header>
 
-	<p>Vastaamalla 10 kysymykseen saat henkilökohtaisen profiilin ja suuntaa antavan arvion vahvuuksistasi ja sopivista työ- ja koulutusvaihtoehdoista.</p>
+  <main>
+    <section>
+      <h2>Tietoa meistä</h2>
+      <p>
+        Yoro Oy on uuden sukupolven digipalveluyritys, joka auttaa kuntia ja oppilaitoksia kehittämään vaikuttavampaa työllisyyspolitiikkaa. Kehitämme ratkaisuja tekoälyn, automaation ja avoimen datan avulla.
+      </p>
+      <p><strong>Y-tunnus:</strong> 3529476-6<br />
+         <strong>Osoite:</strong> Itäkatu 1-5, 00930 Helsinki<br />
+         <strong>Puhelin:</strong> 050 522 7849<br />
+         <strong>Sähköposti:</strong> <a href="mailto:myynti@yoro.fi">myynti@yoro.fi</a>
+      </p>
+    </section>
 
-	<p>Testi on tarkoitettu arviointikäyttöön ohjauksen tukena. Tuloksia ei tule käyttää ainoana perusteena koulutus- tai urapäätöksille.</p>
+    <section>
+      <h2>LxP-profiilitesti</h2>
+      <p>
+        LxP-profiilitesti on Yoro Oy:n kehittämä työkalu, joka tukee yksilöiden urasuunnittelua ja ammatillista suuntautumista. Testi soveltuu sekä opinto-ohjaukseen että työnvälityspalveluihin.
+      </p>
+      <p>
+        Vastaamalla 10 kysymykseen saat henkilökohtaisen profiilin ja suuntaa antavan arvion vahvuuksistasi ja sopivista työ- ja koulutusvaihtoehdoista.
+      </p>
+      <p><strong>Testaa nyt:</strong></p>
+      <a class="button" href="https://plaakkon.github.io/profiilitesti/" target="_blank">Aloita testi</a>
+    </section>
 
-    <p><strong>Käyttöehdot:</strong> Katso lisenssi kohdasta 
-      <a href="https://github.com/plaakkon/profiilitesti/blob/main/license.txt" target="_blank" style="text-decoration: underline; color: #007BFF;">license.txt</a>.
-    </p>
+    <section>
+      <h2>Käyttöehdot ja lisenssi</h2>
+      <p>
+        Profiilitesti on tarkoitettu arviointikäyttöön ohjauksen tukena. Tuloksia ei tule käyttää ainoana perusteena koulutus- tai urapäätöksille.
+      </p>
+      <p>
+        <strong>Sallittu:</strong><br />
+        ✔ Käyttö yläkoulujen, lukioiden ja ammattiopistojen opinto-ohjauksessa<br />
+        ✔ Oppilaiden ohjaus ilman rekisteröitymistä tai tietojen tallennusta<br />
+        ✔ Enintään yksi kouluyksikkö per lisenssi
+      </p>
+      <p>
+        <strong>Kielletty:</strong><br />
+        ✘ Ohjelmiston muokkaaminen tai jälleenmyynti<br />
+        ✘ Kaupallinen käyttö ilman maksullista lisenssiä<br />
+        ✘ Osien kopiointi tai julkaiseminen muualla
+      </p>
+      <p><strong>Lisenssimaksu:</strong> 290 € + alv / vuosi / kouluyksikkö</p>
+    </section>
 
-    <p style="margin-top: 30px; font-size: 0.9em; color: #777;">© 2025 Yoro Oy</p>
+    <section>
+      <h2>Tulossa: Laajennettu palvelupaketti</h2>
+      <p>
+        Tulevassa palveluratkaisussa yhdistyy LxP-analyysi, ylikoulutustiedot ja alueelliset työmarkkina-analyysit. Palvelu sisältää yksilölliset työllistymissuunnitelmat, suositukset, raportoinnin sekä ohjaustyökalut.
+      </p>
+    </section>
+  </main>
 
-    <div id="questionContainer" style="margin: 20px 0;"></div>
-
-    <button 
-      id="toggleButton" 
-      type="button" 
-      style="margin-top: 20px; padding: 10px 15px;"
-    >
-      Aloita kysely
-    </button>
-
-    <div id="resultsContainer" style="margin-top: 30px; display: none;">
-      <h2>Sinulle sopivat ammatit:</h2>
-      <ul id="resultsList"></ul>
-      <div id="writtenSummaryContainer" style="margin-top: 20px; display: none;">
-        <h3>Sanallinen arvio profiilistasi:</h3>
-        <div id="writtenSummary" style="padding-left: 20px; margin: 0;"></div>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js" type="module"></script>
+  <footer>
+    &copy; 2025 Yoro Oy &ndash; www.yoro.fi &ndash; myynti@yoro.fi
+  </footer>
 </body>
 </html>
-
