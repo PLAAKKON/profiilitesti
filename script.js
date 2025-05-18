@@ -323,68 +323,48 @@ function handleAnswer(qid, option) {
   }
 }
 
+// Add the fixes to the existing code
+function blurResults() {
+  const resultsContainer = document.getElementById("resultsContainer");
+  resultsContainer.style.filter = "blur(5px)";
+  resultsContainer.style.pointerEvents = "none";
+}
+
 function applyExclusions() {
+  const excludedJobs = new Set();
+
   if (answers["Q2"] === "c" && answers["Q3"] === "a") {
-    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20].forEach(jobId => excludedJobs.add(jobId));
   }
 
   if (answers["Q2"] === "a" && answers["Q5"] === "c") {
-    const excludedJobs = [12, 13, 14, 17, 18, 19, 24, 25];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
+    [12, 13, 14, 17, 18, 19, 24, 25].forEach(jobId => excludedJobs.add(jobId));
   }
 
   if (answers["Q3"] === "d") {
-    const excludedJobs = [1, 2, 3, 4, 5, 6, 14, 20];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
+    [1, 2, 3, 4, 5, 6, 14, 20].forEach(jobId => excludedJobs.add(jobId));
   }
 
   if (answers["Q7"] === "a") {
-    const excludedJobs = [15, 21, 22];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
+    [15, 21, 22].forEach(jobId => excludedJobs.add(jobId));
   } else if (answers["Q7"] === "b") {
-    const excludedJobs = [21, 22];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
+    [21, 22].forEach(jobId => excludedJobs.add(jobId));
   } else if (answers["Q7"] === "c") {
-    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11];
-    excludedJobs.forEach(jobId => {
-      if (results[jobId]) {
-        results[jobId].score = -Infinity;
-      }
-    });
+    [1, 2, 3, 4, 5, 6, 7, 9, 10, 11].forEach(jobId => excludedJobs.add(jobId));
   }
-}
 
-function applyComboRules() {
-  comboRules.forEach(rule => {
-    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
-      Object.entries(rule.add).forEach(([resultId, score]) => {
-        if (results[resultId]) {
-          results[resultId].score += score;
-        }
-      });
+  excludedJobs.forEach(jobId => {
+    if (results[jobId]) {
+      results[jobId].score = -Infinity;
     }
   });
+
+  const validResults = Object.values(results).filter(res => res.score >= res.threshold);
+  if (validResults.length === 0) {
+    Object.keys(results).forEach(key => {
+      results[key].score = results[key].threshold;
+    });
+  }
 }
 
 function showResults() {
@@ -405,39 +385,29 @@ function showResults() {
     }
   });
 
-  // Lasketaan montako ammatteja on ja paljonko piilotetaan
   const totalAmmatit = ammatit.length;
   const visibleAmmatit = Math.max(1, Math.ceil(totalAmmatit / 2));
 
-  // Lisää otsikko ja näytettävät tulokset "Ammatit"
   if (totalAmmatit > 0) {
     const ammatitHeader = document.createElement("h3");
     ammatitHeader.textContent = "Ammatit";
     resultsList.appendChild(ammatitHeader);
 
-    // Näytetään enintään puolet, kuitenkin vähintään yksi
     ammatit.slice(0, visibleAmmatit).forEach(name => {
       const li = document.createElement("li");
       li.textContent = name;
       resultsList.appendChild(li);
     });
 
-    // Lisätään tieto piilotetuista ammateista
     if (totalAmmatit > visibleAmmatit) {
       const hiddenCount = totalAmmatit - visibleAmmatit;
       const hiddenMessage = document.createElement("li");
       hiddenMessage.textContent = `+ ${hiddenCount} muuta ammattia piilotettu. Aktivoi täysversio nähdäksesi kaikki tulokset.`;
       hiddenMessage.style.color = "#888";
       resultsList.appendChild(hiddenMessage);
-    } else if (totalAmmatit === 1) {
-      const singleMessage = document.createElement("li");
-      singleMessage.textContent = `Saimme tulokseksi yhden ammatin. Aktivoi täysversio nähdäksesi tuloksen.`;
-      singleMessage.style.color = "#888";
-      resultsList.appendChild(singleMessage);
     }
   }
 
-  // Lisää otsikko ja tulokset "Ohjaus- ja tukivaihtoehdot"
   if (ohjausJaTuki.length > 0) {
     const ohjausHeader = document.createElement("h3");
     ohjausHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
@@ -450,10 +420,15 @@ function showResults() {
     });
   }
 
-  // Lisää tuloslista DOM:iin
+  if (totalAmmatit === 0 && ohjausJaTuki.length === 0) {
+    const noResultsMessage = document.createElement("p");
+    noResultsMessage.textContent = "Ei tuloksia. Yritä vastata kysymyksiin eri tavalla.";
+    noResultsMessage.style.color = "red";
+    resultsList.appendChild(noResultsMessage);
+  }
+
   document.getElementById("resultsContainer").appendChild(resultsList);
 
-  // Näytä sanallinen arvio
   let hasNarratives = false;
   Object.entries(answers).forEach(([qid, opt]) => {
     const narrative = narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla.";
@@ -467,10 +442,8 @@ function showResults() {
     writtenSummaryContainer.style.display = "block";
   }
 
-  // Blurrataan tuloslista
   blurResults();
 
-  // Lisää "Palaa alkuun" -nappi
   const restartButton = document.createElement("button");
   restartButton.textContent = "Palaa alkuun";
   restartButton.style.marginTop = "20px";
