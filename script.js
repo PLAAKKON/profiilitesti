@@ -392,7 +392,6 @@ function showResults() {
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
 
-  // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];
   const ohjausJaTuki = [];
 
@@ -406,17 +405,36 @@ function showResults() {
     }
   });
 
-  // Lisää otsikko ja tulokset "Ammatit"
-  if (ammatit.length > 0) {
+  // Lasketaan montako ammatteja on ja paljonko piilotetaan
+  const totalAmmatit = ammatit.length;
+  const visibleAmmatit = Math.max(1, Math.ceil(totalAmmatit / 2));
+
+  // Lisää otsikko ja näytettävät tulokset "Ammatit"
+  if (totalAmmatit > 0) {
     const ammatitHeader = document.createElement("h3");
     ammatitHeader.textContent = "Ammatit";
     resultsList.appendChild(ammatitHeader);
 
-    ammatit.forEach(name => {
+    // Näytetään enintään puolet, kuitenkin vähintään yksi
+    ammatit.slice(0, visibleAmmatit).forEach(name => {
       const li = document.createElement("li");
       li.textContent = name;
       resultsList.appendChild(li);
     });
+
+    // Lisätään tieto piilotetuista ammateista
+    if (totalAmmatit > visibleAmmatit) {
+      const hiddenCount = totalAmmatit - visibleAmmatit;
+      const hiddenMessage = document.createElement("li");
+      hiddenMessage.textContent = `+ ${hiddenCount} muuta ammattia piilotettu. Aktivoi täysversio nähdäksesi kaikki tulokset.`;
+      hiddenMessage.style.color = "#888";
+      resultsList.appendChild(hiddenMessage);
+    } else if (totalAmmatit === 1) {
+      const singleMessage = document.createElement("li");
+      singleMessage.textContent = `Saimme tulokseksi yhden ammatin. Aktivoi täysversio nähdäksesi tuloksen.`;
+      singleMessage.style.color = "#888";
+      resultsList.appendChild(singleMessage);
+    }
   }
 
   // Lisää otsikko ja tulokset "Ohjaus- ja tukivaihtoehdot"
@@ -449,6 +467,9 @@ function showResults() {
     writtenSummaryContainer.style.display = "block";
   }
 
+  // Blurrataan tuloslista
+  blurResults();
+
   // Lisää "Palaa alkuun" -nappi
   const restartButton = document.createElement("button");
   restartButton.textContent = "Palaa alkuun";
@@ -458,38 +479,10 @@ function showResults() {
     document.getElementById("toggleButton").style.display = "block";
     currentQuestionIndex = 0;
     Object.keys(answers).forEach(key => delete answers[key]);
-    Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
-    writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
+    Object.keys(results).forEach(key => results[key].score = 0);
+    writtenSummary.innerHTML = "";
   };
   document.getElementById("resultsContainer").appendChild(restartButton);
 
   document.getElementById("resultsContainer").style.display = "block";
 }
-// Vaihe 1: Blurrattu näkymä tuloksille
-
-// Haetaan elementti, johon tulokset renderöidään
-const resultsContainer = document.getElementById("resultsContainer");
-
-// Funktio, joka blurrattaa näkymän
-function blurResults() {
-  // Luodaan peittoelementti
-  const overlay = document.createElement("div");
-  overlay.style.position = "absolute";
-  overlay.style.top = "0";
-  overlay.style.left = "0";
-  overlay.style.width = "100%";
-  overlay.style.height = "100%";
-  overlay.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
-  overlay.style.display = "flex";
-  overlay.style.alignItems = "center";
-  overlay.style.justifyContent = "center";
-  overlay.style.zIndex = "10";
-  overlay.innerHTML = "<p style='font-size: 18px; color: #555;'>Avaa täydellinen profiili ja yksityiskohtainen arviointi – aktivoi lisäominaisuudet</p>";
-
-  // Lisää peittoelementti tuloslistan päälle
-  resultsContainer.style.position = "relative";
-  resultsContainer.appendChild(overlay);
-}
-
-// Kutsutaan blurrausta kun tulokset näytetään
-setTimeout(blurResults, 500); // Odotetaan hetki ennen blurrausta, jotta näkymä ladataan
