@@ -323,48 +323,68 @@ function handleAnswer(qid, option) {
   }
 }
 
-// Add the fixes to the existing code
-function blurResults() {
-  const resultsContainer = document.getElementById("resultsContainer");
-  resultsContainer.style.filter = "blur(5px)";
-  resultsContainer.style.pointerEvents = "none";
-}
-
 function applyExclusions() {
-  const excludedJobs = new Set();
-
   if (answers["Q2"] === "c" && answers["Q3"] === "a") {
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20].forEach(jobId => excludedJobs.add(jobId));
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 20];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
   }
 
   if (answers["Q2"] === "a" && answers["Q5"] === "c") {
-    [12, 13, 14, 17, 18, 19, 24, 25].forEach(jobId => excludedJobs.add(jobId));
+    const excludedJobs = [12, 13, 14, 17, 18, 19, 24, 25];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
   }
 
   if (answers["Q3"] === "d") {
-    [1, 2, 3, 4, 5, 6, 14, 20].forEach(jobId => excludedJobs.add(jobId));
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 14, 20];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
   }
 
   if (answers["Q7"] === "a") {
-    [15, 21, 22].forEach(jobId => excludedJobs.add(jobId));
+    const excludedJobs = [15, 21, 22];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
   } else if (answers["Q7"] === "b") {
-    [21, 22].forEach(jobId => excludedJobs.add(jobId));
+    const excludedJobs = [21, 22];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
+    });
   } else if (answers["Q7"] === "c") {
-    [1, 2, 3, 4, 5, 6, 7, 9, 10, 11].forEach(jobId => excludedJobs.add(jobId));
-  }
-
-  excludedJobs.forEach(jobId => {
-    if (results[jobId]) {
-      results[jobId].score = -Infinity;
-    }
-  });
-
-  const validResults = Object.values(results).filter(res => res.score >= res.threshold);
-  if (validResults.length === 0) {
-    Object.keys(results).forEach(key => {
-      results[key].score = results[key].threshold;
+    const excludedJobs = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11];
+    excludedJobs.forEach(jobId => {
+      if (results[jobId]) {
+        results[jobId].score = -Infinity;
+      }
     });
   }
+}
+
+function applyComboRules() {
+  comboRules.forEach(rule => {
+    if (rule.cond.every(cond => answers[`Q${cond.q}`] === cond.a)) {
+      Object.entries(rule.add).forEach(([resultId, score]) => {
+        if (results[resultId]) {
+          results[resultId].score += score;
+        }
+      });
+    }
+  });
 }
 
 function showResults() {
@@ -372,6 +392,7 @@ function showResults() {
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
 
+  // Näytä tulokset, jotka ylittävät kynnyksen
   const ammatit = [];
   const ohjausJaTuki = [];
 
@@ -385,29 +406,20 @@ function showResults() {
     }
   });
 
-  const totalAmmatit = ammatit.length;
-  const visibleAmmatit = Math.max(1, Math.ceil(totalAmmatit / 2));
-
-  if (totalAmmatit > 0) {
+  // Lisää otsikko ja tulokset "Ammatit"
+  if (ammatit.length > 0) {
     const ammatitHeader = document.createElement("h3");
     ammatitHeader.textContent = "Ammatit";
     resultsList.appendChild(ammatitHeader);
 
-    ammatit.slice(0, visibleAmmatit).forEach(name => {
+    ammatit.forEach(name => {
       const li = document.createElement("li");
       li.textContent = name;
       resultsList.appendChild(li);
     });
-
-    if (totalAmmatit > visibleAmmatit) {
-      const hiddenCount = totalAmmatit - visibleAmmatit;
-      const hiddenMessage = document.createElement("li");
-      hiddenMessage.textContent = `+ ${hiddenCount} muuta ammattia piilotettu. Aktivoi täysversio nähdäksesi kaikki tulokset.`;
-      hiddenMessage.style.color = "#888";
-      resultsList.appendChild(hiddenMessage);
-    }
   }
 
+  // Lisää otsikko ja tulokset "Ohjaus- ja tukivaihtoehdot"
   if (ohjausJaTuki.length > 0) {
     const ohjausHeader = document.createElement("h3");
     ohjausHeader.textContent = "Ohjaus- ja tukivaihtoehdot";
@@ -420,15 +432,10 @@ function showResults() {
     });
   }
 
-  if (totalAmmatit === 0 && ohjausJaTuki.length === 0) {
-    const noResultsMessage = document.createElement("p");
-    noResultsMessage.textContent = "Ei tuloksia. Yritä vastata kysymyksiin eri tavalla.";
-    noResultsMessage.style.color = "red";
-    resultsList.appendChild(noResultsMessage);
-  }
-
+  // Lisää tuloslista DOM:iin
   document.getElementById("resultsContainer").appendChild(resultsList);
 
+  // Näytä sanallinen arvio
   let hasNarratives = false;
   Object.entries(answers).forEach(([qid, opt]) => {
     const narrative = narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla.";
@@ -442,8 +449,7 @@ function showResults() {
     writtenSummaryContainer.style.display = "block";
   }
 
-  blurResults();
-
+  // Lisää "Palaa alkuun" -nappi
   const restartButton = document.createElement("button");
   restartButton.textContent = "Palaa alkuun";
   restartButton.style.marginTop = "20px";
@@ -452,10 +458,38 @@ function showResults() {
     document.getElementById("toggleButton").style.display = "block";
     currentQuestionIndex = 0;
     Object.keys(answers).forEach(key => delete answers[key]);
-    Object.keys(results).forEach(key => results[key].score = 0);
-    writtenSummary.innerHTML = "";
+    Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
+    writtenSummary.innerHTML = ""; // Tyhjennä sanallinen arvio
   };
   document.getElementById("resultsContainer").appendChild(restartButton);
 
   document.getElementById("resultsContainer").style.display = "block";
 }
+// Vaihe 1: Blurrattu näkymä tuloksille
+
+// Haetaan elementti, johon tulokset renderöidään
+const resultsContainer = document.getElementById("resultsContainer");
+
+// Funktio, joka blurrattaa näkymän
+function blurResults() {
+  // Luodaan peittoelementti
+  const overlay = document.createElement("div");
+  overlay.style.position = "absolute";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+  overlay.style.display = "flex";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.style.zIndex = "10";
+  overlay.innerHTML = "<p style='font-size: 18px; color: #555;'>Näet tällä hetkellä vain osan sinulle sopivista ammateista. Aktivoi täysversio nähdäksesi kaikki ammatit ja henkilökohtaisen arvion! Näet tällä hetkellä vain osan sinulle sopivista ammateista. Aktivoi täysversio nähdäksesi kaikki ammatit ja henkilökohtaisen arvion! Näet tällä hetkellä vain osan sinulle sopivista ammateista. Aktivoi täysversio nähdäksesi kaikki ammatit ja henkilökohtaisen arvion! Näet tällä hetkellä vain osan sinulle sopivista ammateista. Aktivoi täysversio nähdäksesi kaikki ammatit ja henkilökohtaisen arvion!</p>";
+
+  // Lisää peittoelementti tuloslistan päälle
+  resultsContainer.style.position = "relative";
+  resultsContainer.appendChild(overlay);
+}
+
+// Kutsutaan blurrausta kun tulokset näytetään
+setTimeout(blurResults, 500); // Odotetaan hetki ennen blurrausta, jotta näkymä ladataan
