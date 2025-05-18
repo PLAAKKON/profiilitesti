@@ -465,3 +465,31 @@ function showResults() {
 
   document.getElementById("resultsContainer").style.display = "block";
 }
+// Vaihe 1: Blurrattu näkymä tuloksille
+
+// Haetaan elementti, johon tulokset renderöidään
+const resultsContainer = document.getElementById("resultsContainer");
+
+// Funktio, joka blurrattaa näkymän
+function blurResults() {
+  // Luodaan peittoelementti
+  const overlay = document.createElement("div");
+  overlay.style.position = "absolute";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+  overlay.style.display = "flex";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.style.zIndex = "10";
+  overlay.innerHTML = "<p style='font-size: 18px; color: #555;'>Avaa täydellinen profiili ja yksityiskohtainen arviointi – aktivoi lisäominaisuudet</p>";
+
+  // Lisää peittoelementti tuloslistan päälle
+  resultsContainer.style.position = "relative";
+  resultsContainer.appendChild(overlay);
+}
+
+// Kutsutaan blurrausta kun tulokset näytetään
+setTimeout(blurResults, 500); // Odotetaan hetki ennen blurrausta, jotta näkymä ladataan
