@@ -47,6 +47,21 @@
   </div>
 
   <script src="script.js" type="module"></script>
+  <script>
+    // Näytä sähköposti ja logout-nappi jos käyttäjä on kirjautunut
+    window.addEventListener('DOMContentLoaded', function() {
+      const userEmail = localStorage.getItem('userEmail');
+      const emailDisplay = document.getElementById('userEmailDisplay');
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (userEmail) {
+        emailDisplay.textContent = userEmail;
+        logoutBtn.style.display = 'inline-block';
+      } else {
+        emailDisplay.textContent = '';
+        logoutBtn.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
 
