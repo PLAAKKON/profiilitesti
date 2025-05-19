@@ -30,6 +30,14 @@
 
     <div id="questionContainer" style="margin: 20px 0;"></div>
 
+    <!-- Profiilitestin napit -->
+<div id="testButtons" style="display: flex; gap: 10px; margin-top: 15px;">
+    <a class="button" href="https://plaakkon.github.io/profiilitesti/" target="_blank">Kokeile kirjautumatta</a>
+    <a class="button" href="/rekisteroidy" target="_self">Rekisteröidy käyttäjäksi</a>
+    <a class="button" href="/kirjaudu" target="_self">Kirjaudu sisään</a>
+</div>
+<a id="goToTestBtn" class="button" href="https://yoro.fi/profiilitesti/index.html" style="display:none; background:#4CAF50; margin-top: 15px;">Siirry profiilitestiin</a>
+
     <button 
       id="toggleButton" 
       type="button" 
@@ -55,17 +63,23 @@
   <script>
     // Näytä sähköposti ja logout-nappi jos käyttäjä on kirjautunut
     window.addEventListener('DOMContentLoaded', function() {
-      const userEmail = localStorage.getItem('userEmail');
-      const emailDisplay = document.getElementById('userEmailDisplay');
-      const logoutBtn = document.getElementById('logoutBtn');
-      if (userEmail) {
-        emailDisplay.textContent = userEmail;
-        logoutBtn.style.display = 'inline-block';
-      } else {
-        emailDisplay.textContent = '';
-        logoutBtn.style.display = 'none';
-      }
-    });
+  const userEmail = localStorage.getItem('userEmail');
+  const emailDisplay = document.getElementById('userEmailDisplay');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const testButtons = document.getElementById('testButtons');
+  const goToTestBtn = document.getElementById('goToTestBtn');
+  if (userEmail) {
+    emailDisplay.textContent = userEmail;
+    logoutBtn.style.display = 'inline-block';
+    if (testButtons) testButtons.style.display = 'none';
+    if (goToTestBtn) goToTestBtn.style.display = 'inline-block';
+  } else {
+    emailDisplay.textContent = '';
+    logoutBtn.style.display = 'none';
+    if (testButtons) testButtons.style.display = 'flex';
+    if (goToTestBtn) goToTestBtn.style.display = 'none';
+  }
+});
 
     // Uloskirjautumisfunktio
     function logoutUser() {
@@ -74,11 +88,7 @@
 
       // Poista käyttäjän tiedot localStoragesta
       localStorage.removeItem('userEmail');
-      // Piilota logout-nappi ja sähköposti
-      document.getElementById('logoutBtn').style.display = 'none';
-      document.getElementById('userEmailDisplay').textContent = '';
-      // Voit halutessasi ohjata käyttäjän kirjautumissivulle:
-      // window.location.href = "kirjaudu.html";
+      location.reload(); // Päivitä sivu, jotta näkymä palautuu alkuperäiseksi
     }
 
     // Esimerkki etusivulle navigoinnista
