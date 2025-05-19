@@ -11,11 +11,11 @@
   <div class="container">
     <h1>Työ- ja opintopolun profiilitesti</h1>
 
-	<p>LxP-profiilitesti on Yoro Oy:n kehittämä työkalu, joka tukee yksilöiden urasuunnittelua ja ammatillista suuntautumista. Testi soveltuu sekä opinto-ohjaukseen että työnvälityspalveluihin.</p>
+    <p>LxP-profiilitesti on Yoro Oy:n kehittämä työkalu, joka tukee yksilöiden urasuunnittelua ja ammatillista suuntautumista. Testi soveltuu sekä opinto-ohjaukseen että työnvälityspalveluihin.</p>
 
-	<p>Vastaamalla 10 kysymykseen saat henkilökohtaisen profiilin ja suuntaa antavan arvion vahvuuksistasi ja sopivista työ- ja koulutusvaihtoehdoista.</p>
+    <p>Vastaamalla 10 kysymykseen saat henkilökohtaisen profiilin ja suuntaa antavan arvion vahvuuksistasi ja sopivista työ- ja koulutusvaihtoehdoista.</p>
 
-	<p>Testi on tarkoitettu arviointikäyttöön ohjauksen tukena. Tuloksia ei tule käyttää ainoana perusteena koulutus- tai urapäätöksille.</p>
+    <p>Testi on tarkoitettu arviointikäyttöön ohjauksen tukena. Tuloksia ei tule käyttää ainoana perusteena koulutus- tai urapäätöksille.</p>
 
     <p><strong>Käyttöehdot:</strong> Katso lisenssi kohdasta 
       <a href="https://github.com/plaakkon/profiilitesti/blob/main/license.txt" target="_blank" style="text-decoration: underline; color: #007BFF;">license.txt</a>.
@@ -32,9 +32,9 @@
     >
       Aloita kysely
     </button>
-	<p id="userEmailDisplay"></p>
-	<button id="logoutBtn" onclick="logoutUser()" style="display:none;">Kirjaudu ulos</button>
-	<button id="homeBtn" onclick="navigateToHome()" style="display:block;">Palaa Yoro.fi etusivulle</button>
+    <p id="userEmailDisplay"></p>
+    <button id="logoutBtn" onclick="logoutUser()" style="display:none;">Kirjaudu ulos</button>
+    <button id="homeBtn" onclick="navigateToHome()" style="display:block;">Palaa Yoro.fi etusivulle</button>
 
     <div id="resultsContainer" style="margin-top: 30px; display: none;">
       <h2>Sinulle sopivat ammatit:</h2>
@@ -61,7 +61,25 @@
         logoutBtn.style.display = 'none';
       }
     });
+
+    // Uloskirjautumisfunktio
+    function logoutUser() {
+      // Jos käytät Firebase Auth:
+      // firebase.auth().signOut().then(() => { ... });
+
+      // Poista käyttäjän tiedot localStoragesta
+      localStorage.removeItem('userEmail');
+      // Piilota logout-nappi ja sähköposti
+      document.getElementById('logoutBtn').style.display = 'none';
+      document.getElementById('userEmailDisplay').textContent = '';
+      // Voit halutessasi ohjata käyttäjän kirjautumissivulle:
+      // window.location.href = "kirjaudu.html";
+    }
+
+    // Esimerkki etusivulle navigoinnista
+    function navigateToHome() {
+      window.location.href = "https://yoro.fi";
+    }
   </script>
 </body>
 </html>
-
