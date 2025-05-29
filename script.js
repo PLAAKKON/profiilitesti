@@ -469,9 +469,12 @@ function showResults() {
 // Tulosten näyttäminen
 firebase.auth().onAuthStateChanged((user) => {
   const resultsContainer = document.getElementById("resultsContainer");
+  const loginOffer = document.getElementById("loginOffer");
   if (user) {
     resultsContainer.classList.remove("blurred");
+    if (loginOffer) loginOffer.style.display = "none";
   } else {
     resultsContainer.classList.add("blurred");
+    if (loginOffer) loginOffer.style.display = "block";
   }
 });
