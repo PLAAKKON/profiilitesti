@@ -32,7 +32,6 @@
 
     <!-- Profiilitestin napit -->
 <div id="testButtons" style="display: flex; gap: 10px; margin-top: 15px;">
-    <a class="button" id="kokeile-kirjautumatta" href="https://plaakkon.github.io/profiilitesti/" target="_blank">Kokeile kirjautumatta</a>
     <a class="button" href="/rekisteroidy" target="_self">Rekisteröidy käyttäjäksi</a>
     <a class="button" href="/kirjaudu" target="_self">Kirjaudu sisään</a>
 </div>
@@ -102,15 +101,5 @@
       window.location.href = "https://yoro.fi";
     }
   </script>
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('kokeile-kirjautumatta');
-    if (btn) {
-      btn.addEventListener('click', function() {
-        btn.style.display = 'none';
-      });
-    }
-  });
-</script>
 </body>
 </html>
