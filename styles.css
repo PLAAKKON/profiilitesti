@@ -15,20 +15,13 @@ button {
   margin-bottom: 20px;
 }
 
-/* Estä blur ja pointer-events homeBtn-napilta vaikka se olisi blurred-containerin sisällä */
-#homeBtn {
-  filter: none !important;
-  pointer-events: auto !important;
-  position: relative;
-  z-index: 2;
-}
-
 .blurred {
   filter: blur(6px);
   pointer-events: none;
   user-select: none;
   position: relative;
 }
+
 .blurred::after {
   content: "Kirjaudu sisään nähdäksesi tulokset";
   position: absolute;
@@ -40,6 +33,13 @@ button {
   z-index: 2;
   width: 100%;
   pointer-events: none;
+}
+
+#homeBtn {
+  filter: none !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 10;
 }
 
 #toggleButton {
