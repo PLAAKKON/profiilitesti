@@ -490,6 +490,16 @@ function showResults() {
   document.getElementById("resultsContainer").style.display = "block";
 }
 
+function flashInstructionWarning() {
+  const instruction = document.getElementById("instructionText");
+  if (instruction) {
+    instruction.classList.add("flash-warning");
+    setTimeout(() => {
+      instruction.classList.remove("flash-warning");
+    }, 800);
+  }
+}
+
 // Tulosten näyttäminen
 firebase.auth().onAuthStateChanged((user) => {
   const resultsContainer = document.getElementById("resultsContainer");
