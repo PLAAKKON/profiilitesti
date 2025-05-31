@@ -505,15 +505,17 @@ function flashInstructionWarning() {
   }
 }
 
-// Tulosten näyttäminen
 firebase.auth().onAuthStateChanged((user) => {
   const resultsContainer = document.getElementById("resultsContainer");
   const loginOffer = document.getElementById("loginOffer");
+
   if (user) {
-    resultsContainer.classList.remove("blurred");
+    userIsLoggedIn = true;
     if (loginOffer) loginOffer.style.display = "none";
+    renderFullResults();
   } else {
-    resultsContainer.classList.add("blurred");
+    userIsLoggedIn = false;
     if (loginOffer) loginOffer.style.display = "block";
+    renderTeaserResults();
   }
 });
