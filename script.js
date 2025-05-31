@@ -350,7 +350,17 @@ function applyExclusions() {
       }
     });
   }
-
+  // Poista johtamiskoulutuksen ehdotus, jos selkeästi ei sovi
+  if (
+    answers["Q1"] === "c" ||  // tarvitsee säännöllistä apua
+    answers["Q1"] === "e" ||  // kaipaa jatkuvaa ohjausta
+    answers["Q4"] === "c" ||  // ei arvosta itsenäisyyttä
+    answers["Q5"] === "d"     // ei halua käyttää tietotekniikkaa
+  ) {
+    if (results["28"]) {
+      results["28"].score = -Infinity;
+    }
+  }
   if (answers["Q7"] === "a") {
     const excludedJobs = [15, 21, 22];
     excludedJobs.forEach(jobId => {
