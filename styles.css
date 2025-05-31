@@ -62,3 +62,15 @@ button {
 #resultsContainer {
   margin-top: 40px;
 }
+
+@keyframes flashRed {
+  0%   { color: #555; }
+  25%  { color: red; }
+  50%  { color: #555; }
+  75%  { color: red; }
+  100% { color: #555; }
+}
+
+.flash-warning {
+  animation: flashRed 0.8s ease;
+}
