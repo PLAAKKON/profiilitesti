@@ -495,6 +495,56 @@ function showResults() {
   document.getElementById("resultsContainer").style.display = "block";
 }
 
+function renderTeaserResults() {
+  const resultsContainer = document.getElementById("resultsContainer");
+  resultsContainer.innerHTML = "";
+
+  const topProfessions = finalResults.slice(0, 2);
+  const hiddenCount = finalResults.length - topProfessions.length;
+
+  const professionHTML = topProfessions
+    .map((r) => `<li>${r.label}</li>`)
+    .join("") +
+    (hiddenCount > 0 ? `<li class="teaser-hidden">+ ${hiddenCount} muuta ammattia piilotettu</li>` : "");
+
+  const shortText = verbalAssessment.slice(0, 120);
+
+  resultsContainer.innerHTML = `
+    <div class="teaser-box">
+      <h3>Sinulle sopivat ammatit (esikatselu)</h3>
+      <ul>${professionHTML}</ul>
+
+      <h3>Sanallinen arvio</h3>
+      <p>
+        ${shortText}<span class="teaser-hidden">... (kirjaudu nähdäksesi koko arvio)</span>
+      </p>
+
+      <div class="teaser-cta">
+        <p><em>Kirjaudu sisään nähdäksesi koko profiilisi, kaikki suositukset ja ohjausvaihtoehdot.</em></p>
+        <a href="/kirjaudu" class="cta-button">Näytä koko profiilini</a>
+      </div>
+    </div>
+  `;
+}
+
+function renderFullResults() {
+  const resultsContainer = document.getElementById("resultsContainer");
+  resultsContainer.innerHTML = "";
+
+  // Näytä kaikki finalResults ja koko verbalAssessment tässä
+  const professionHTML = finalResults.map((r) => `<li>${r.label}</li>`).join("");
+
+  resultsContainer.innerHTML = `
+    <div>
+      <h3>Sinulle sopivat ammatit</h3>
+      <ul>${professionHTML}</ul>
+
+      <h3>Sanallinen arvio</h3>
+      <p>${verbalAssessment}</p>
+    </div>
+  `;
+}
+
 function flashInstructionWarning() {
   const instruction = document.getElementById("instructionText");
   if (instruction) {
