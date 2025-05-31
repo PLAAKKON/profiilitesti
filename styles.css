@@ -15,11 +15,10 @@ button {
   margin-bottom: 20px;
 }
 
-.blurred {
-  filter: blur(6px);
+.teaser-hidden {
+  opacity: 0.3;
   pointer-events: none;
   user-select: none;
-  position: relative;
 }
 
 .blurred::after {
