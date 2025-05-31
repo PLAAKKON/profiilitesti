@@ -245,7 +245,10 @@ document.getElementById("toggleButton").addEventListener("click", () => {
 function showQuestion() {
   const question = questions[currentQuestionIndex];
   const container = document.getElementById("questionContainer");
-  container.innerHTML = `<h3>${question.text}</h3>`;
+  container.innerHTML = `
+    <h3>${question.text}</h3>
+    <p style="font-style: italic; color: #555;">Valitse yksi vastaus jatkaaksesi.</p>
+  `;
 
   Object.entries(question.options).forEach(([key, option]) => {
     const btn = document.createElement("button");
