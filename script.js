@@ -246,9 +246,19 @@ function showQuestion() {
   const question = questions[currentQuestionIndex];
   const container = document.getElementById("questionContainer");
   container.innerHTML = `
-    <h3>${question.text}</h3>
-    <p style="font-style: italic; color: #555;">Valitse yksi vastaus jatkaaksesi.</p>
-  `;
+  <h3>${question.text}</h3>
+  <p id="instructionText" style="font-style: italic; color: #555;">Valitse yksi vastaus jatkaaksesi.</p>
+`;
+
+  function flashInstructionWarning() {
+  const instruction = document.getElementById("instructionText");
+  if (instruction) {
+    instruction.classList.add("flash-warning");
+    setTimeout(() => {
+      instruction.classList.remove("flash-warning");
+    }, 800); // vastaava kuin animaation kesto
+  }
+}
 
   Object.entries(question.options).forEach(([key, option]) => {
     const btn = document.createElement("button");
