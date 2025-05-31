@@ -456,6 +456,7 @@ function showResults() {
   restartButton.onclick = () => {
     document.getElementById("resultsContainer").style.display = "none";
     document.getElementById("toggleButton").style.display = "block";
+    document.getElementById("questionContainer").style.display = "none"; // Piilota kysymykset
     currentQuestionIndex = 0;
     Object.keys(answers).forEach(key => delete answers[key]);
     Object.keys(results).forEach(key => results[key].score = 0); // Nollaa pisteet
