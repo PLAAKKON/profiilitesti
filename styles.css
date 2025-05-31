@@ -62,6 +62,30 @@ button {
   margin-top: 40px;
 }
 
+.teaser-hidden {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+.teaser-box {
+  background: #fff;
+  padding: 1.5em;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 2em;
+}
+
+.teaser-cta a.cta-button {
+  display: inline-block;
+  margin-top: 1em;
+  background: #007acc;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
 @keyframes flashRed {
   0%   { color: #555; }
   25%  { color: red; }
