@@ -274,7 +274,7 @@ function showQuestion() {
 
   if (currentQuestionIndex > 0) {
     const backButton = document.createElement("button");
-    backButton.textContent = "Back";
+    backButton.textContent = "Edellinen kysymys";
     backButton.onclick = () => {
       currentQuestionIndex--;
       showQuestion();
@@ -284,7 +284,7 @@ function showQuestion() {
 
   if (currentQuestionIndex < questions.length - 1) {
     const forwardButton = document.createElement("button");
-    forwardButton.textContent = "Forward";
+    forwardButton.textContent = "Seuraava kysymys";
     forwardButton.onclick = () => {
       currentQuestionIndex++;
       showQuestion();
