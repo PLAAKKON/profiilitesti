@@ -299,9 +299,14 @@ function showQuestion() {
     const forwardButton = document.createElement("button");
     forwardButton.textContent = "Seuraava kysymys";
     forwardButton.onclick = () => {
-      currentQuestionIndex++;
-      showQuestion();
-    };
+    const question = questions[currentQuestionIndex];
+    if (!answers[question.id]) {
+      flashInstructionWarning(); // Näytä punainen välähdys
+      return; // Älä etene jos vastausta ei ole
+    }
+    currentQuestionIndex++;
+    showQuestion();
+  };
     navContainer.appendChild(forwardButton);
   }
 
