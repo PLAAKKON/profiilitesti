@@ -238,6 +238,8 @@ function getVerbalAssessment() {
 
 let currentQuestionIndex = 0;
 const answers = {};
+let finalResults = [];
+let verbalAssessment = "";
 
 document.getElementById("toggleButton").addEventListener("click", () => {
   const toggleButton = document.getElementById("toggleButton");
