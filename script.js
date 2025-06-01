@@ -1,4 +1,3 @@
-let userIsLoggedIn = false;
 const questions = [
   {
     id: "Q1",
