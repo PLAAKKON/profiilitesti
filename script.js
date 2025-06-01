@@ -223,6 +223,19 @@ const narratives = {
   }
 };
 
+function getFinalResults() {
+  // Collect all professions that meet the threshold
+  return Object.entries(results)
+    .filter(([id, prof]) => prof.score >= prof.threshold)
+    .map(([id, prof]) => ({ label: prof.name }));
+}
+
+function getVerbalAssessment() {
+  return Object.entries(answers)
+    .map(([qid, opt]) => "• " + (narratives[qid]?.[opt] || "Ei sanallista arviota saatavilla."))
+    .join("<br>");
+}
+
 let currentQuestionIndex = 0;
 const answers = {};
 
@@ -558,6 +571,10 @@ function flashInstructionWarning() {
 firebase.auth().onAuthStateChanged((user) => {
   const resultsContainer = document.getElementById("resultsContainer");
   const loginOffer = document.getElementById("loginOffer");
+
+  // Generate up-to-date results and summary
+  finalResults = getFinalResults();
+  verbalAssessment = getVerbalAssessment();
 
   if (user) {
     userIsLoggedIn = true;
