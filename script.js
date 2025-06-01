@@ -432,6 +432,10 @@ function applyComboRules() {
 }
 
 function showResults() {
+  // Näytä tulokset ja piilota kysymysosio
+  document.getElementById("questionContainer").style.display = "none";
+  document.getElementById("resultsContainer").style.display = "block";
+
   // Päivitä tulosmuuttujat
   finalResults = getFinalResults();
   verbalAssessment = getVerbalAssessment();
@@ -489,6 +493,9 @@ function showResults() {
 
   // Lisää tuloslista DOM:iin
   document.getElementById("resultsContainer").appendChild(resultsList);
+
+  // Tyhjennä edelliset sanalliset arviot
+  writtenSummary.innerHTML = "";
 
   // Näytä sanallinen arvio
   let hasNarratives = false;
