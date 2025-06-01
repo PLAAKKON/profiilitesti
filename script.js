@@ -240,6 +240,7 @@ let currentQuestionIndex = 0;
 const answers = {};
 let finalResults = [];
 let verbalAssessment = "";
+let userIsLoggedIn = false;
 
 document.getElementById("toggleButton").addEventListener("click", () => {
   const toggleButton = document.getElementById("toggleButton");
@@ -431,6 +432,17 @@ function applyComboRules() {
 }
 
 function showResults() {
+  // Päivitä tulosmuuttujat
+  finalResults = getFinalResults();
+  verbalAssessment = getVerbalAssessment();
+
+  // Jos käyttäjä EI ole kirjautunut, näytä teaser ja poistu funktiosta
+  if (!userIsLoggedIn) {
+    renderTeaserResults();
+    return;
+  }
+
+  // ...olemassa oleva showResults-koodisi jatkuu tästä...
   const resultsList = document.createElement("ul");
   const writtenSummary = document.getElementById("writtenSummary");
   const writtenSummaryContainer = document.getElementById("writtenSummaryContainer");
