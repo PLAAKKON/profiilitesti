@@ -583,20 +583,9 @@ function flashInstructionWarning() {
 }
 
 firebase.auth().onAuthStateChanged((user) => {
-  const resultsContainer = document.getElementById("resultsContainer");
   const loginOffer = document.getElementById("loginOffer");
-
-  // Generate up-to-date results and summary
-  finalResults = getFinalResults();
-  verbalAssessment = getVerbalAssessment();
-
-  if (user) {
-    userIsLoggedIn = true;
-    if (loginOffer) loginOffer.style.display = "none";
-    renderFullResults();
-  } else {
-    userIsLoggedIn = false;
-    if (loginOffer) loginOffer.style.display = "block";
-    renderTeaserResults();
-  }
+  userIsLoggedIn = !!user;
+  if (loginOffer) loginOffer.style.display = user ? "none" : "block";
+  // Älä kutsu tässä renderFullResults() tai renderTeaserResults()
+  // Tulokset näytetään vain showResults()-funktion kautta testin jälkeen
 });
