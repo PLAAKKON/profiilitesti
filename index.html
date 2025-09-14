@@ -135,7 +135,7 @@
 
       <!-- Päivitetty: oikeat kirjautumisnapit -->
       <div class="nav-cta" id="authCta">
-        <a class="button" href="/kirjaudu" target="_self" title="Sähköposti/salasana tms.">Kirjaudu sisään</a>
+  <a class="button" href="#" target="_self" title="Sähköposti/salasana tms." onclick="redirectToLogin(event)">Kirjaudu sisään</a>
       </div>
     </nav>
   </header>
@@ -163,8 +163,16 @@
     <section class="card" style="margin-top: 18px;">
       <div class="row" id="testButtons">
         <!-- Näkyvät nappulat kun ei-kirjautunut -->
-  <a class="button" href="/kirjaudu" target="_self" id="registerBtn">Rekisteröidy käyttäjäksi</a>
-  <a class="button btn-secondary" href="/kirjaudu" target="_self" id="loginBtn">Kirjaudu sisään</a>
+  <a class="button" href="#" target="_self" id="registerBtn" onclick="redirectToLogin(event)">Rekisteröidy käyttäjäksi</a>
+  <a class="button btn-secondary" href="#" target="_self" id="loginBtn" onclick="redirectToLogin(event)">Kirjaudu sisään</a>
+  <script>
+    // Ohjaa kirjautumissivulle ja lisää returnUrl nykyisestä sijainnista
+    function redirectToLogin(e) {
+      e.preventDefault();
+      var url = '/kirjaudu?returnUrl=' + encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
+      window.location.href = url;
+    }
+  </script>
 
         <button id="homeBtn" class="btn-secondary" onclick="navigateToHome()">Palaa Yoro.fi etusivulle</button>
 
