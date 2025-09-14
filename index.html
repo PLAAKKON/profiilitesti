@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LxP Profiilitesti – Yoro Oy</title>
 
-  <!-- Firebase (unchanged) -->
+  <!-- Firebase (compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+
+  <!-- Oma konfiguraatio (pidä nämä) -->
   <script defer src="../firebaseConfig.js"></script>
+  <!-- Jos auth.js tekee jotain omaa, voit jättää sen. Ei pakollinen tämän toimimiselle. -->
   <script defer src="../auth.js"></script>
 
   <!-- Fonts -->
@@ -19,10 +22,10 @@
 
   <style>
     :root {
-      --yoro-primary: #1b6cff; /* Yoro sininen */
+      --yoro-primary: #1b6cff;
       --yoro-primary-600: #1553c8;
       --yoro-primary-700: #0f3ea3;
-      --yoro-accent: #00b3c8; /* turkoosi aksentti */
+      --yoro-accent: #00b3c8;
       --text: #0b1020;
       --muted: #5b6477;
       --bg: #0a0f1a;
@@ -50,141 +53,64 @@
         linear-gradient(180deg, #071022 0%, #0a0f1a 100%);
     }
 
-    /* Header */
-    .site-header {
-      position: sticky; top: 0; z-index: 50;
-      background: rgba(10,15,26,0.7);
-      backdrop-filter: saturate(140%) blur(10px);
-      border-bottom: 1px solid var(--border);
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(10,15,26,0.7); backdrop-filter: saturate(140%) blur(10px); border-bottom: 1px solid var(--border); }
+    .nav { max-width: 1080px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #eaf2ff; }
+    .brand-logo { width: 36px; height: 36px; border-radius: 12px; background:
+      radial-gradient(circle at 70% 30%, #b7e7ff 0 18%, transparent 19%),
+      radial-gradient(circle at 40% 80%, #a0f0ff 0 20%, transparent 21%),
+      linear-gradient(135deg, #1b6cff 0%, #00b3c8 100%);
+      box-shadow: inset 0 0 8px rgba(255,255,255,0.25), 0 6px 14px rgba(0,0,0,0.35); position: relative;
     }
-    .nav {
-      max-width: 1080px; margin: 0 auto; padding: 14px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .brand {
-      display: flex; align-items: center; gap: 12px; text-decoration: none;
-      color: #eaf2ff;
-    }
-    .brand-logo {
-      width: 36px; height: 36px; border-radius: 12px;
-      background: radial-gradient(circle at 70% 30%, #b7e7ff 0 18%, transparent 19%),
-                  radial-gradient(circle at 40% 80%, #a0f0ff 0 20%, transparent 21%),
-                  linear-gradient(135deg, #1b6cff 0%, #00b3c8 100%);
-      box-shadow: inset 0 0 8px rgba(255,255,255,0.25), 0 6px 14px rgba(0,0,0,0.35);
-      position: relative;
-    }
-    /* pienen kalan "häntä" */
-    .brand-logo::after{
-      content: ""; position: absolute; right: -5px; top: 14px; width: 12px; height: 8px;
-      background: linear-gradient(135deg, #00b3c8, #1b6cff);
-      border-radius: 2px 8px 8px 2px / 2px 8px 8px 2px;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
+    .brand-logo::after{ content: ""; position: absolute; right: -5px; top: 14px; width: 12px; height: 8px; background: linear-gradient(135deg, #00b3c8, #1b6cff);
+      border-radius: 2px 8px 8px 2px / 2px 8px 8px 2px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
     .brand-title { font-weight: 700; letter-spacing: 0.2px; }
     .brand-sub { opacity: 0.7; font-weight: 500; font-size: 0.9rem; }
 
-    .nav-cta {
-      display: inline-flex; gap: 10px; align-items: center;
-    }
+    .nav-cta { display: inline-flex; gap: 10px; align-items: center; }
 
-    /* Layout */
-    .container {
-      max-width: 980px;
-      margin: 40px auto 80px;
-      padding: 0 20px;
-    }
-
-    .hero {
-      background: linear-gradient(180deg, rgba(15,26,46,0.8), rgba(14,22,38,0.8));
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-lg);
-      border-radius: var(--radius-2xl);
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before{
-      content: ""; position: absolute; inset: -2px; z-index: 0;
-      background:
-        radial-gradient(600px 120px at 50% -20px, rgba(27,108,255,0.35), transparent 60%),
-        radial-gradient(400px 150px at 20% 120%, rgba(0,179,200,0.25), transparent 70%);
-      pointer-events: none;
-    }
+    .container { max-width: 980px; margin: 40px auto 80px; padding: 0 20px; }
+    .hero { background: linear-gradient(180deg, rgba(15,26,46,0.8), rgba(14,22,38,0.8)); border: 1px solid var(--border); box-shadow: var(--shadow-lg);
+      border-radius: var(--radius-2xl); padding: 28px; position: relative; overflow: hidden; }
+    .hero::before{ content: ""; position: absolute; inset: -2px; z-index: 0; background:
+      radial-gradient(600px 120px at 50% -20px, rgba(27,108,255,0.35), transparent 60%),
+      radial-gradient(400px 150px at 20% 120%, rgba(0,179,200,0.25), transparent 70%); pointer-events: none; }
     .hero > * { position: relative; z-index: 1; }
 
-    h1 {
-      margin: 0 0 10px; font-size: clamp(1.6rem, 2.2vw + 1rem, 2.4rem);
-      line-height: 1.15;
-    }
+    h1 { margin: 0 0 10px; font-size: clamp(1.6rem, 2.2vw + 1rem, 2.4rem); line-height: 1.15; }
     p { color: #c9d6fb; }
 
-    .meta-note{
-      display: inline-block; margin-top: 6px; font-size: 0.95rem; color: #a8b4d6;
-    }
+    .meta-note{ display: inline-block; margin-top: 6px; font-size: 0.95rem; color: #a8b4d6; }
 
-    /* Cards */
-    .card {
-      background: linear-gradient(180deg, rgba(14,22,38,0.8), rgba(10,15,26,0.6));
-      border: 1px solid var(--border);
-      border-radius: var(--radius-2xl);
-      padding: 22px;
-      box-shadow: var(--shadow-md);
-    }
+    .card { background: linear-gradient(180deg, rgba(14,22,38,0.8), rgba(10,15,26,0.6)); border: 1px solid var(--border);
+      border-radius: var(--radius-2xl); padding: 22px; box-shadow: var(--shadow-md); }
 
-    /* Buttons */
-    .button, button {
-      appearance: none; border: none; cursor: pointer;
-      font: inherit; color: white; font-weight: 600;
-      background: linear-gradient(135deg, var(--yoro-primary), var(--yoro-accent));
-      padding: 12px 16px; border-radius: 999px;
-      box-shadow: 0 8px 18px rgba(27,108,255,0.35);
-      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
-      text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
-    }
+    .button, button { appearance: none; border: none; cursor: pointer; font: inherit; color: white; font-weight: 600;
+      background: linear-gradient(135deg, var(--yoro-primary), var(--yoro-accent)); padding: 12px 16px; border-radius: 999px;
+      box-shadow: 0 8px 18px rgba(27,108,255,0.35); transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+      text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
     .button:hover, button:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(27,108,255,0.42); }
     .button:active, button:active { transform: translateY(0); box-shadow: 0 6px 14px rgba(27,108,255,0.35); }
 
-    .btn-secondary{
-      background: linear-gradient(135deg, #16233b, #0f1a2e);
-      border: 1px solid var(--border);
-      color: #d6e3ff;
-      box-shadow: var(--shadow-sm);
-    }
+    .btn-secondary{ background: linear-gradient(135deg, #16233b, #0f1a2e); border: 1px solid var(--border); color: #d6e3ff; box-shadow: var(--shadow-sm); }
     .btn-secondary:hover{ filter: brightness(1.06); }
 
-    /* Banner for login teaser */
-    .teaser {
-      margin-top: 18px; padding: 14px 16px; text-align: center;
-      border-radius: 14px; border: 1px dashed #3b4f7a;
-      background: linear-gradient(180deg, rgba(27,108,255,0.08), rgba(0,179,200,0.06));
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-    }
+    .teaser { margin-top: 18px; padding: 14px 16px; text-align: center; border-radius: 14px; border: 1px dashed #3b4f7a;
+      background: linear-gradient(180deg, rgba(27,108,255,0.08), rgba(0,179,200,0.06)); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02); }
     .teaser p { margin: 0; font-weight: 600; }
     .teaser strong { color: #ffb86c; }
 
-    /* Results */
     #resultsContainer h2 { margin-top: 0; }
     #resultsList { list-style: none; padding-left: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-    #resultsList li {
-      background: linear-gradient(180deg, #0f1a2e, #0c1425);
-      border: 1px solid var(--border);
-      padding: 12px 14px; border-radius: 14px; box-shadow: var(--shadow-sm);
-    }
+    #resultsList li { background: linear-gradient(180deg, #0f1a2e, #0c1425); border: 1px solid var(--border); padding: 12px 14px; border-radius: 14px; box-shadow: var(--shadow-sm); }
 
     #writtenSummaryContainer h3 { margin-bottom: 10px; }
     #writtenSummary { color: #dbe6ff; }
 
-    /* Footer */
-    .footer {
-      margin-top: 28px; color: #9fb0d4; font-size: 0.9rem;
-      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-      border-top: 1px solid var(--border); padding-top: 18px;
-    }
+    .footer { margin-top: 28px; color: #9fb0d4; font-size: 0.9rem; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 18px; }
 
-    /* Utility */
     .row { display: flex; gap: 10px; flex-wrap: wrap; }
 
-    /* Responsive tweaks */
     @media (max-width: 640px){
       .nav { padding: 12px 16px; }
       .container { margin: 24px auto 64px; }
@@ -206,9 +132,11 @@
           <span class="brand-sub">LxP – Profiilitesti</span>
         </span>
       </a>
-      <div class="nav-cta">
-        <a class="button btn-secondary" href="/kirjaudu" target="_self">Kirjaudu</a>
-        <a class="button" href="/kirjaudu" target="_self">Rekisteröidy</a>
+
+      <!-- Päivitetty: oikeat kirjautumisnapit -->
+      <div class="nav-cta" id="authCta">
+        <button class="button btn-secondary" type="button" onclick="loginWithGoogle()">Kirjaudu Googlella</button>
+        <a class="button" href="/kirjaudu" target="_self" title="Sähköposti/salasana tms.">Muu kirjautuminen</a>
       </div>
     </nav>
   </header>
@@ -235,9 +163,13 @@
     <!-- Auth state + actions -->
     <section class="card" style="margin-top: 18px;">
       <div class="row" id="testButtons">
-        <a class="button" href="/kirjaudu" target="_self">Rekisteröidy käyttäjäksi</a>
-        <a class="button btn-secondary" href="/kirjaudu" target="_self">Kirjaudu sisään</a>
+        <!-- Näkyvät nappulat kun ei-kirjautunut -->
+        <a class="button" href="/kirjaudu" target="_self" id="registerBtn">Rekisteröidy käyttäjäksi</a>
+        <button class="button btn-secondary" type="button" id="loginBtn" onclick="loginWithGoogle()">Kirjaudu sisään</button>
+
         <button id="homeBtn" class="btn-secondary" onclick="navigateToHome()">Palaa Yoro.fi etusivulle</button>
+
+        <!-- Näkyy vain kirjautuneelle -->
         <button id="logoutBtn" class="btn-secondary" onclick="logoutUser()" style="display:none;">Kirjaudu ulos</button>
       </div>
 
@@ -274,39 +206,60 @@
     </footer>
   </main>
 
-  <!-- App logic -->
+  <!-- App logic (voit pitää oman script.js:n) -->
   <script src="script.js" type="module"></script>
 
+  <!-- Kirjautumislogiikka -->
   <script>
-    // Näytä sähköposti ja logout-nappi jos käyttäjä on kirjautunut
-    window.addEventListener('DOMContentLoaded', function() {
-      const userEmail = localStorage.getItem('userEmail');
-      const emailDisplay = document.getElementById('userEmailDisplay');
-      const logoutBtn = document.getElementById('logoutBtn');
-      const testButtons = document.getElementById('testButtons');
-      const goToTestBtn = document.getElementById('goToTestBtn');
-      if (userEmail) {
-        emailDisplay.textContent = userEmail;
-        logoutBtn.style.display = 'inline-flex';
-        if (testButtons) testButtons.style.display = 'flex';
-        if (goToTestBtn) goToTestBtn.style.display = 'inline-flex';
-      } else {
-        emailDisplay.textContent = '';
-        logoutBtn.style.display = 'none';
-        if (testButtons) testButtons.style.display = 'flex';
-        if (goToTestBtn) goToTestBtn.style.display = 'none';
+    // Odota että Firebase & firebaseConfig on ladattu (firebase.apps)
+    (function waitForFirebase(){
+      if (!window.firebase || !firebase.apps || !firebase.apps.length) {
+        return setTimeout(waitForFirebase, 50);
       }
-    });
 
-    // Uloskirjautumisfunktio
-    function logoutUser() {
-      // Jos käytät Firebase Auth:
-      // firebase.auth().signOut().then(() => { ... });
+      // 1) Tee kirjautumisesta pysyvä selaimen istuntojen yli
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
 
-      // Poista käyttäjän tiedot localStoragesta
-      localStorage.removeItem('userEmail');
-      location.reload(); // Päivitä sivu, jotta näkymä palautuu alkuperäiseksi
-    }
+      // 2) Valitse provider (Google tässä esimerkissä)
+      const provider = new firebase.auth.GoogleAuthProvider();
+
+      // 3) Globaalit funktiot napeille
+      window.loginWithGoogle = function(){
+        firebase.auth().signInWithPopup(provider).catch(err=>{
+          if (err && err.code === 'auth/popup-blocked') {
+            return firebase.auth().signInWithRedirect(provider);
+          }
+          alert('Kirjautuminen epäonnistui: ' + (err && err.message ? err.message : 'tuntematon virhe'));
+        });
+      };
+
+      window.logoutUser = function(){
+        firebase.auth().signOut().catch(console.error);
+      };
+
+      // 4) Auth-tilan kuuntelu → päivitä UI
+      firebase.auth().onAuthStateChanged(function(user){
+        const emailDisplay = document.getElementById('userEmailDisplay');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginOffer = document.getElementById('loginOffer');
+
+        // Näytä sähköposti
+        if (emailDisplay) {
+          emailDisplay.textContent = user ? (user.email || user.displayName || '') : '';
+        }
+
+        // Näytä/piilota napit
+        if (logoutBtn) logoutBtn.style.display = user ? 'inline-flex' : 'none';
+        if (loginBtn) loginBtn.style.display = user ? 'none' : 'inline-flex';
+        if (registerBtn) registerBtn.style.display = user ? 'none' : 'inline-flex';
+
+        // Teaser vain kirjautumattomalle
+        if (loginOffer) loginOffer.style.display = user ? 'none' : 'block';
+      });
+
+    })();
 
     // Etusivulle navigointi
     function navigateToHome() {
@@ -315,3 +268,4 @@
   </script>
 </body>
 </html>
+
