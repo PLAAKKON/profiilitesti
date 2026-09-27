@@ -431,10 +431,92 @@ function applyComboRules() {
   });
 }
 
+function resetScores() {
+  Object.keys(results).forEach((id) => { results[id].score = 0; });
+}
+
+function applyAnswerPoints() {
+  Object.entries(answers).forEach(([qid, option]) => {
+    const question = questions.find((item) => item.id === qid);
+    const points = question && question.options[option] ? question.options[option].points || {} : {};
+    Object.entries(points).forEach(([resultId, score]) => {
+      if (results[resultId]) results[resultId].score += score;
+    });
+  });
+}
+
+function answersFromKey(key) {
+  const map = {};
+  String(key || "").match(/\d+[A-E]/gi)?.forEach((part) => {
+    const n = parseInt(part, 10);
+    const letter = part.replace(/\d+/, "").toLowerCase();
+    if (n >= 1 && n <= 10 && letter) map["Q" + n] = letter;
+  });
+  return map;
+}
+
+function answersComplete(map) {
+  return questions.every((question) => map && map[question.id]);
+}
+
+function openSavedAnswers(map) {
+  Object.keys(answers).forEach((key) => delete answers[key]);
+  Object.assign(answers, map);
+  resetScores();
+  applyAnswerPoints();
+  applyExclusions();
+  applyComboRules();
+  const toggle = document.getElementById("toggleButton");
+  if (toggle) toggle.style.display = "none";
+  const hero = document.querySelector(".hero");
+  if (hero) hero.style.display = "none";
+  showResults();
+  document.getElementById("resultsContainer").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function savedAnswers(user) {
+  let map = {};
+  try {
+    map = JSON.parse(localStorage.getItem("yoroLxpAnswers") || "{}") || {};
+  } catch (e) {
+    map = {};
+  }
+  try {
+    const token = await user.getIdToken();
+    const response = await fetch("https://us-central1-urapolku-7780a.cloudfunctions.net/tyonhaku", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+      body: JSON.stringify({ action: "lataa" })
+    });
+    const data = await response.json();
+    const profile = data.profiili || {};
+    const fromKey = answersFromKey(profile.LxP);
+    if (answersComplete(fromKey)) return fromKey;
+    if (answersComplete(profile.lxpVastaukset)) return profile.lxpVastaukset;
+  } catch (e) { /* kokeillaan vielä tietokantaa */ }
+  try {
+    const snap = await firebase.firestore().collection("profiles").doc("oma_" + user.uid).get();
+    const data = snap.data() || {};
+    const fromKey = answersFromKey(data.LxP);
+    if (answersComplete(fromKey)) return fromKey;
+    if (answersComplete(data.lxpVastaukset)) return data.lxpVastaukset;
+  } catch (e) { /* paikallinen tallennus riittää */ }
+  return map;
+}
+
 function showResults() {
+  const resultsContainer = document.getElementById("resultsContainer");
+  resultsContainer.querySelectorAll("ul, button").forEach((el) => {
+    if (el.id !== "resultsList") el.remove();
+  });
+  const staticList = document.getElementById("resultsList");
+  if (staticList) staticList.innerHTML = "";
+  const writtenSummaryNode = document.getElementById("writtenSummary");
+  if (writtenSummaryNode) writtenSummaryNode.innerHTML = "";
+
   // Näytä tulokset ja piilota kysymysosio
   document.getElementById("questionContainer").style.display = "none";
-  document.getElementById("resultsContainer").style.display = "block";
+  resultsContainer.style.display = "block";
 
   // Päivitä tulosmuuttujat
   finalResults = getFinalResults();
@@ -589,10 +671,14 @@ function flashInstructionWarning() {
   }
 }
 
-firebase.auth().onAuthStateChanged((user) => {
+let restoredSavedTest = false;
+firebase.auth().onAuthStateChanged(async (user) => {
   const loginOffer = document.getElementById("loginOffer");
   userIsLoggedIn = !!user;
   if (loginOffer) loginOffer.style.display = user ? "none" : "block";
-  // Älä kutsu tässä renderFullResults() tai renderTeaserResults()
-  // Tulokset näytetään vain showResults()-funktion kautta testin jälkeen
+  if (!user || restoredSavedTest) return;
+  const map = await savedAnswers(user);
+  if (!answersComplete(map)) return;
+  restoredSavedTest = true;
+  openSavedAnswers(map);
 });
